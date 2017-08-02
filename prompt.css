@@ -1,0 +1,37 @@
+.console {
+	background-color:#0d1926;
+	color:#d9e6f2;
+	font-family:Monospace;
+	font-size:10pt;
+	
+	height:25%;
+	width:100%;
+	overflow-y:auto;
+	word-wrap: break-word;
+	padding-left:1pt;
+	margin-left: 2pt;
+
+}
+.history {
+	margin:0pt 0pt 0pt 0pt;
+	width:555pt;
+	overflow-y:scroll;
+	overflow-x:hidden;
+}
+.consoleInput {
+	display:inline-block;	
+	background-color:#0d1926;
+	color:#d9e6f2;
+	font-family:Monospace;
+	font-size:10pt;
+	
+	width:100%;
+	height:30%;
+	padding-top:0px;
+	border:none;
+	resize:none;
+
+}
+.consoleInput:focus {
+	outline:none; /*remove outline from input box when in focus*/
+}

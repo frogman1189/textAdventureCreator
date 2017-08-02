@@ -1,0 +1,61 @@
+---Text Based Game Creator---
+
+--Research--
+Text Based Games:	Zork (1979)
+			Acheton (1978)
+			Mystery Mansion (1981)
+			Colossal Cave Adventure (1977)
+
+-Zork-
+Setting: Ruins of an ancient empire lying far underground
+Goal: Return from exploring the 'Great Underground Empire' alive and with all the treasures required to complete each adventure.
+
+Commands:
+COMMAND		SHORTCUT	ACTION
+north		n		Moves north
+south		s		Moves south
+east		e		Moves east
+west		w		Moves west
+northeast	ne		moves northeast
+northwest	nw		moves northwest
+southeast	se		moves southeast
+southwest	sw		moves southwest
+up		u		moves up
+down		d		moves down
+look		l		Looks around at current location
+save				save state to a file
+restore				restores a saved game
+restart				restarts the game
+verbose				Gives full description after each command
+score				displays score and ranking
+diagnostic			Give description of health
+brief				Give a description upon first entering an area
+superbrief			never describe an area
+quit		q		Quit game
+climb				climbs(up)
+g				go towards
+go(direction)			direction(west/east/north/south/in/out/into)
+enter				in to the place(window...)
+out				go out of the place(kitchen...)
+hi/hello			say hello...
+
+COMMAND		SHORTCUT	ACTION
+(ARGUMENT)
+get/take			Removes item from current room; places in inventory
+get/take all			takes all takeable objects
+
+
+--------------------------------------------------------------------------------
+
+Text Adventure Objectives:
+Enable a user to generate a text based game using a logical graphical display.
+Text based game includes:
+	Rooms/Areas
+	Items
+	Events
+	Entities
+
+Requires:
+	Interpreter
+	Designer
+
