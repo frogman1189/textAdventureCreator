@@ -1,0 +1,2 @@
+{"name":"Sea","description":"Wet... very wet.","destinations":{"N":1},"startArea":true,"currentArea":true,"index":0}
+{"name":"Beach","description":"Sandy... rather sandy","destinations":{"S":0},"startArea":false,"currentArea":false,"index":1}

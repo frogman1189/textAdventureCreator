@@ -6,6 +6,7 @@
 	
 	height:25%;
 	width:100%;
+	min-height:50pt;
 	overflow-y:auto;
 	word-wrap: break-word;
 	padding-left:1pt;
@@ -14,8 +15,9 @@
 }
 .history {
 	margin:0pt 0pt 0pt 0pt;
-	width:555pt;
-	overflow-y:scroll;
+	padding:0pt 0pt 0pt 0pt;
+	width:100%;
+	overflow-y:auto;
 	overflow-x:hidden;
 }
 .consoleInput {
@@ -26,8 +28,8 @@
 	font-size:10pt;
 	
 	width:100%;
-	height:30%;
-	padding-top:0px;
+	margin: 0pt 0pt 0pt 0pt;
+	padding:0pt 0pt 0pt 0pt;
 	border:none;
 	resize:none;
 
