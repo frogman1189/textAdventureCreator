@@ -8,15 +8,23 @@
 	</head>
 	<body onload="setInputListener()">
 		<div id="console" class="console">
-			<p id="history">
+			<div id="history">
 				
-			</p>
-			<textarea class="consoleInput" id="input" type="text">>>> </textarea>
+			</div>
+			<textarea class="consoleInput" id="input" type="text">></textarea>
 		</div>
-		<input type="file" id="srcFile">JSON source file</input>
-		<button onclick="loadLocalProjectFile()">Load</button>
+		<input type="file" id="srcFile" onchange="loadLocalProjectFile()">Load</input>
+		<!--<button onclick="loadLocalProjectFile()">Load</button>-->
 		<button onclick="saveProject()">Save Project</button>
 		<button onclick="runMove()">move</button>
+		<div id="area">
+			<form id="addArea">
+				<textarea id="name">NAME</textarea>
+				<input id="description">DESCRIPTION</input>
+				<input id="startArea" value="true">StartArea</input>
+				<button onclick="addArea()">add Area</button>
+			</form>
+				
 		
 	</body>
 </html>

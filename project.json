@@ -1,3 +1,19 @@
-{"name":"Sea","description":"Wet... very wet.","destinations":{"N":1},"startArea":true,"currentArea":true,"index":0}
+{"class":"area","name":"Sea","description":"Wet... very wet.","destinations":{"N":[1,false], "E":[2,false], "W":[3,false], "S":[5,false]},"startArea":true,"currentArea":true,"index":0,"monsters":[]}
 
-{"name":"Beach","description":"Sandy... rather sandy","destinations":{"S":0},"startArea":false,"currentArea":false,"index":1}
+{"class":"area","name":"Beach","description":"Sandy... rather sandy","destinations":{"S":[0,false], "E":[4, false], "W":[6,false]},"startArea":false,"currentArea":false,"index":1,"monsters":[{"class":"monster","name":"Cthulu","hp":10000,"dp":500,"sp":3,"drop":[],"index":0}]}
+
+{"class":"area","name":"Mountains","description":"Rocky... quite rocky","destinations":{"W":[0,false], "N":[4,false], "S":[8,false]},"startArea":false,"currentArea":false,"index":2,"monsters":[]}
+
+{"class":"area","name":"Forest","description":"Prickly... fairly prickly","destinations":{"E":[0,false], "N":[6,false], "S":[7,false]},"startArea":false,"currentArea":false,"index":3,"monsters":[]}
+
+{"class":"area","name":"Plains","description":"Flat... somewhat flat","destinations":{"W":[1,false], "S":[2,false]},"startArea":false,"currentArea":false,"index":4,"monsters":[]}
+
+{"class":"area","name":"Valley","description":"V-shaped... significantly v-shaped","destinations":{"N":[0,false], "W":[7,false], "E":[8,false]},"startArea":false,"currentArea":false,"index":5,"monsters":[]}
+
+{"class":"area","name":"Desert","description":"Dusty... comparitively dusty","destinations":{"E":[1,false], "S":[3,false]},"startArea":false,"currentArea":false,"index":6,"monsters":[]}
+
+{"class":"area","name":"Volcano","description":"Hot... adequately hot","destinations":{"N":[3,false], "E":[5,false]},"startArea":false,"currentArea":false,"index":7,"monsters":[]}
+
+{"class":"area","name":"Glacier","description":"Icy... passably icy","destinations":{"N":[2,false], "W":[5,false]},"startArea":false,"currentArea":false,"index":8,"monsters":[]}
+
+{"class":"monster","name":"Cthulu","hp":10000,"dp":500,"sp":3,"drop":[],"index":0}

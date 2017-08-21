@@ -4,7 +4,7 @@
 	font-family:Monospace;
 	font-size:10pt;
 	
-	height:25%;
+	height:80%;
 	width:100%;
 	min-height:50pt;
 	overflow-y:auto;
@@ -19,6 +19,11 @@
 	width:100%;
 	overflow-y:auto;
 	overflow-x:hidden;
+	font-weight:300;
+}
+#title {
+	font-weight:900;
+	padding: 15pt 0pt 10pt 0pt;
 }
 .consoleInput {
 	display:inline-block;	
