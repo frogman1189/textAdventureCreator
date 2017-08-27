@@ -1,9 +1,81 @@
 var global_currentArea = null;
 var global_startArea = null;
 var global_areaArray = [];
-global_objectArray = [];
+global_itemArray = [];
 global_monsterArray = [];
 var global_player;
+
+directionKey = {"NORTH":"N", "SOUTH":"S", "EAST":"E", "WEST":"W", "NORTHEAST":"NE", "NORTHWEST":"NW", "SOUTHEAST":"SE", "SOUTHWEST":"SW", "UP": "U", "DOWN":"D", "N":"N", "S":"S", "E":"E", "W":"W", "NE":"NE", "NW":"NW", "SE":"SE", "SW":"SW", "U":"U", "D":"D"};
+
+class Event {
+	constructor(eventType, eventToListenFor, arrayOfConditions, addedIndex, tmp, /*0 = once, 1 = until completed, 2 = always*/ locIndex) {
+		this.type = eventType;
+		this.listener = eventToListenFor;
+		this.conditions = arrayOfConditions;
+		this.addedIndex = addedIndex;
+		this.locIndex = locIndex;
+		this.tmp = tmp;
+	}
+}
+
+class EventHandler {
+	constructor() {
+		this.listeners = [];
+	}
+	report(event) {
+		for (var a = 0; a < this.listeners.length; a++) {
+			if (this.listeners[a].listener == event[0]) {
+				var checking = true;
+				for(var b = 0; b < this.listeners[a].conditions.length; b+=2) {
+					if(this.listeners[a].conditions[b] != this.listeners[a].conditions[b+1]) {
+						checking = false;
+						break;
+					}
+					
+				}
+				if(checking == true) {
+					if(this.listeners[a].type == "area_additem") {
+						global_areaArray[this.listeners[a].locIndex].items.push(global_itemArray[this.listeners[a].addedIndex]);
+					}
+					if(this.listeners[a].type == "area_addMonster") {
+						global_areaArray[this.listeners[a].locIndex].items.push(global_monsterArray[this.listeners[a].addedIndex]);
+					}
+					if(this.listeners[a].type == "area_unlock") {
+						global_areaArray[this.listeners[a].locIndex].directions[this.listeners[a].addedIndex][2] = false;
+					}
+					if(this.listeners[a].type == "area_lock") {
+						global_areaArray[this.listeners[a].locIndex].directions[this.listeners[a].addedIndex][2] = true;
+					}
+					
+					if(this.listeners[a].type == "player_addItem") {
+						player.items.push(global_itemArray[this.listeners[a].addedIndex]);
+					}
+					//not quite sure why this is here, may have been another type I wanted to add, or maybe overzealous copy and pasting
+					/*if(this.listeners[a].type == "player_addItem") {
+						player.items.push(global_itemArray[this.listeners[a].addedIndex]);
+					}*/
+					
+					if(this.listeners[a].tmp  < 2) {
+						this.listeners.splice(a, 1);
+					}
+					
+				}
+				else {
+					if(this.listeners[a].tmp == 0) {
+						this.listeners.splice(a, 1);
+					}
+				checking = false;
+				}
+			}
+		}
+	}
+	addListener(eventType, eventToListenFor, arrayOfConditions, addedIndex, tmp, locIndex) {
+		this.listeners.push(new Event(eventType, eventToListenFor, arrayOfConditions, addedIndex, tmp, locIndex))
+	}
+}
+
+
+
 
 //add new area template
 function addAreaForm() {
@@ -21,7 +93,8 @@ function addArea() {
 class Player {
 	constructor() {
 		//this.room = global_currentArea; // rubbish, taken care of by global_currentArea
-		this.items = {};
+		this.items = [];
+		//this.itemsLength = 0;
 		this.maxHp = 10;
 		this.hp = this.maxHp;
 		this.dp = 5;
@@ -32,8 +105,11 @@ function start() {
 	display(global_currentArea.name, true);
 	display(global_currentArea.description);
 	player = new Player();
+	eventHandler = new EventHandler();
+	eventHandler.addListener("player_addItem", "start", [], 0, 0);
 	var input = document.getElementById("input");
 	input.disabled = false;
+	eventHandler.report(["start"]);
 	
 }
 
@@ -64,7 +140,7 @@ class Area {
 		this.description = description;
 		this.destinations = {};
 		this.items = {};
-		this.objects = {};
+		this.monsters = {};
 		this.startArea = startArea;
 		this.currentArea = false; //for loading saves. If this is true in json string then it gets set to current area during loading
 		global_areaArray.push(this);
@@ -80,14 +156,44 @@ class Area {
 	addDestination(direction, areaIndex, locked=false) {
 		this.destinations[direction] = [areaIndex, locked];
 	}
+	look() {
+		display(global_currentArea.name, true);
+		display(global_currentArea.description);
+		if(global_currentArea.items.length > 0) {
+			var itemString = "There is a "
+			for (i in global_currentArea.items) {
+				if(i == (global_currentArea.items.length - 1)) {
+					itemString = itemString + global_currentArea.items[i].name + ".";
+				}
+				else {
+					itemString = itemString + global_currentArea.items[i].name + ", ";
+				}
+			}
+			display(itemString);
+		}
+		var dest = Object.keys(global_currentArea.destinations);
+		if(dest.length > 0) {
+			var destString = "There is passage to the ";
+			dest = dest.sort();
+			for(i = 0; i < dest.length; i++) {
+				if(i == dest.length - 2) {
+					destString = destString + dest[i] + " and " + dest[i + 1];
+					i = i + 1;
+				}
+				else {
+					destString = destString + dest[i] + ", ";
+				}
+			}
+			display(destString);
+		}
+		advanceTick();
+	}
 	// move in direction, if that direction points to an area then set global_currentArea to that area.
 	move(dir) {
 		//console.log(this.destinations[dir]);
 		if (this.destinations[dir] != undefined && this.destinations[dir][1] == false) {
 			global_currentArea = global_areaArray[this.destinations[dir][0]];
-			display(global_currentArea.name, true);
-			display(global_currentArea.description);
-			advanceTick();
+			this.look();
 			//console.log(global_currentArea.description);
 		}
 		else {
@@ -113,9 +219,6 @@ class Area {
 // object interacted with? (switch, looking somewhere causes trap? etc)
 
 /*
-area_addItem(item, areaIndex) {
-	global_areaArray[areaIndex].items[item.name] = item;
-}
 area_addObject(object, areaIndex) {
 	global_areaArray[areaIndex].objects[object.name] = name;
 }
@@ -161,35 +264,32 @@ class Monster {
 		global_monsterArray.push(this);
 	}
 }
-
-
-class Event {
-	constructor(name = "Untitled_Event") {
-		this.name = name;
-		
-	}
-}
-class Object {
-	constructor(name = "Untitled_Object") {
-		this.name = name;
-		this.area = {};
-		this.events = {};
-	}
-	look(area) {
-		if(this.area[area]) {
-			display(this.area[area]);
-		}
-	}
-	addEvent(arg1, arg2, test, fieldModified, modification) {
-		
-				
-	}
-	
-}
-
 class Item {
-	constructor(name = "Untitled_Item") {
+	constructor(name = "Unamed_Item",
+				smell = "It has no smell",
+				listen = "It makes no noise",
+				examine = "There is nothing special about it", 
+				moveable = false,
+				moveMessage = undefined,
+				edible = false,
+				heal = undefined,
+				pickable = false,
+				dp = 0) {
+		//attributes
+		this.class = "item";
 		this.name = name;
+		this.smell = smell;
+		this.listen = listen;
+		this.examine = examine;
+		this.movable = moveable;
+		this.moveMessage = moveMessage;
+		this.edible = edible;
+		this.heal = heal;
+		this.pickable = pickable;
+		this.dp = dp;
+		this.index = global_itemArray.length;
+		global_itemArray.push(this);
+		
 	}
 }
 
@@ -229,6 +329,9 @@ function loadProject(file) {
 			if(global_areaArray[loadedObject.index].currentArea == true) {
 				global_currentArea = global_areaArray[loadedObject.index];
 			}
+		}
+		if(loadedObject.class == "item") {
+			global_itemArray[loadedObject.index] = loadedObject;
 		}
 		if(loadedObject.class == "monster") {
 			global_monsterArray[loadedObject.index] = loadedObject;
@@ -276,6 +379,18 @@ function saveProject() {
 		outfile = outfile + JSON.stringify(global_areaArray[i]);
 		if(i == global_areaArray.length - 1) {
 			if(global_monsterArray[0] != undefined) {
+				outfile = outfile + "\r\n\r\n";
+			}
+		}
+		else {
+			outfile = outfile + "\r\n\r\n";
+		}
+		
+	}
+	for (i in global_itemArray) {
+		outfile = outfile + JSON.stringify(global_itemArray[i]);
+		if(i == global_itemArray.length - 1) {
+			if(global_itemArray[0] != undefined) {
 				outfile = outfile + "\r\n\r\n";
 			}
 		}
@@ -372,7 +487,8 @@ function dealInput(input) {
 	for (i=0;i<input.length;i++) {
 		//console.log(input[i]);
 		if(input[0] == "MOVE" || input[i] == "GO") {
-			global_currentArea.move(input[i+1][0]);
+			
+			global_currentArea.move(directionKey[input[i+1]]);
 			return 0;
 		}
 		//if (input[0]
