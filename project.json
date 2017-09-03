@@ -2,20 +2,26 @@
 
 {"class":"area","name":"Beach","description":"Sandy... rather sandy","destinations":{"S":[0,false],"E":[4,false],"W":[6,false]},"startArea":false,"currentArea":false,"index":1,"monsters":[{"class":"monster","name":"Cthulu","hp":10000,"dp":500,"sp":3,"drop":[],"index":0}],"items":[]}
 
-{"class":"area","name":"Mountains","description":"Rocky... quite rocky","destinations":{"W":[0,false],"N":[4,false],"S":[8,false]},"startArea":false,"currentArea":false,"index":2,"monsters":[],"items":[{"class":"item","name":"Sword","smell":"Smells metallic","listen":"It makes a slight humming sound","examine":"By jove! it's glowing","movable":true,"moveMessage":"Well, you moved the sword, are you happy now?","edible":false,"pickable":true,"dp":50,"index":0}]}
+{"class":"area","name":"Mountains","description":"Rocky... quite rocky","destinations":{"W":[0,false],"N":[4,false],"S":[8,false]},"startArea":false,"currentArea":false,"index":2,"monsters":[],"items":[{"class":"item","name":"Hamburger","smell":"Smells like delicious meat","listen":"It makes no noise","examine":"A sumptous treat for the weary traveller","movable":true,"moveMessage":"Even just touching it makes you want to eat it.","edible":true,"drinkable":false,"heal":50,"pickable":true,"dp":0,"index":1}]}
 
 {"class":"area","name":"Forest","description":"Prickly... fairly prickly","destinations":{"E":[0,false],"N":[6,false],"S":[7,false]},"startArea":false,"currentArea":false,"index":3,"monsters":[],"items":[]}
 
 {"class":"area","name":"Plains","description":"Flat... somewhat flat","destinations":{"W":[1,false],"S":[2,false]},"startArea":false,"currentArea":false,"index":4,"monsters":[],"items":[]}
 
-{"class":"area","name":"Valley","description":"V-shaped... significantly v-shaped","destinations":{"N":[0,false],"W":[7,false],"E":[8,false]},"startArea":false,"currentArea":false,"index":5,"monsters":[],"items":[]}
+{"class":"area","name":"Valley","description":"V-shaped... significantly v-shaped","destinations":{"N":[0,false],"W":[7,false],"E":[8,false]},"startArea":false,"currentArea":false,"index":5,"monsters":[{"class":"monster","name":"Slime","hp":10,"dp":1,"sp":1,"drop":[],"index":8}],"items":[]}
 
 {"class":"area","name":"Desert","description":"Dusty... comparitively dusty","destinations":{"E":[1,false],"S":[3,false]},"startArea":false,"currentArea":false,"index":6,"monsters":[],"items":[]}
 
-{"class":"area","name":"Volcano","description":"Hot... adequately hot","destinations":{"N":[3,false],"E":[5,false]},"startArea":false,"currentArea":false,"index":7,"monsters":[],"items":[]}
+{"class":"area","name":"Volcano","description":"Hot... adequately hot","destinations":{"N":[3,false],"E":[5,false]},"startArea":false,"currentArea":false,"index":7,"monsters":[],"items":[{"class":"item","name":"Coke","smell":"Smells fizzy","listen":"You hear the fizzing of carbon dioxide escaping the liquid","examine":"An odd carbonated drink. This may be bad for my health","movable":true,"moveMessage":"You move the Coke, careful not to spill it","edible":false,"drinkable":true,"heal":-10,"pickable":true,"dp":50,"index":2}]}
 
 {"class":"area","name":"Glacier","description":"Icy... passably icy","destinations":{"N":[2,false],"W":[5,false]},"startArea":false,"currentArea":false,"index":8,"monsters":[],"items":[]}
 
-{"class":"item","name":"Sword","smell":"Smells metallic","listen":"It makes a slight humming sound","examine":"By jove! it's glowing","movable":true,"moveMessage":"Well, you moved the sword, are you happy now?","edible":false,"pickable":true,"dp":50,"index":0}
+{"class":"item","name":"Sword","smell":"Smells metallic","listen":"It makes a slight humming sound","examine":"By jove! it's glowing","movable":true,"moveMessage":"Well, you moved the sword, are you happy now?","edible":false,"drinkable":false,"pickable":true,"dp":50,"index":0}
+
+{"class":"item","name":"Hamburger","smell":"Smells like delicious meat","listen":"It makes no noise","examine":"A sumptous treat for the weary traveller","movable":true,"moveMessage":"Even just touching it makes you want to eat it.","edible":true,"drinkable":false,"heal":50,"pickable":true,"dp":0,"index":1}
+
+{"class":"item","name":"Coke","smell":"Smells fizzy","listen":"You hear the fizzing of carbon dioxide escaping the liquid","examine":"An odd carbonated drink. This may be bad for my health","movable":true,"moveMessage":"You move the Coke, careful not to spill it","edible":false,"drinkable":true,"heal":-10,"pickable":true,"dp":50,"index":2}
 
 {"class":"monster","name":"Cthulu","hp":10000,"dp":500,"sp":3,"drop":[],"index":0}
+
+{"class":"monster","name":"Slime","hp":10,"dp":1,"sp":1,"drop":[],"index":8}

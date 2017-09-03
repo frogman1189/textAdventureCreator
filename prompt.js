@@ -1,3 +1,4 @@
+var loadedFile;
 var global_currentArea = null;
 var global_startArea = null;
 var global_areaArray = [];
@@ -5,7 +6,8 @@ global_itemArray = [];
 global_monsterArray = [];
 var global_player;
 
-directionKey = {"NORTH":"N", "SOUTH":"S", "EAST":"E", "WEST":"W", "NORTHEAST":"NE", "NORTHWEST":"NW", "SOUTHEAST":"SE", "SOUTHWEST":"SW", "UP": "U", "DOWN":"D", "N":"N", "S":"S", "E":"E", "W":"W", "NE":"NE", "NW":"NW", "SE":"SE", "SW":"SW", "U":"U", "D":"D"};
+commandKey = {"NORTH":"N", "SOUTH":"S", "EAST":"E", "WEST":"W", "NORTHEAST":"NE", "NORTHWEST":"NW", "SOUTHEAST":"SE", "SOUTHWEST":"SW", "UP": "U", "DOWN":"D", "N":"N", "S":"S", "E":"E", "W":"W", "NE":"NE", "NW":"NW", "SE":"SE", "SW":"SW", "U":"U", "D":"D",
+				"MOVE":"MOVE", "GO":"MOVE", "ATTACK":"KILL", "KILL":"KILL", "LOOK":"LOOK", "L":"LOOK", "PICKUP":"PICK", "PICK":"PICK", "TAKE":"PICK", "GRAB":"PICK", "DROP":"DROP", "I":"I", "INVENTORY":"I", "EXAMINE":"EXAMINE", "EAT":"EAT", "DRINK":"DRINK", "PUSH":"PUSH", "THROW":"THROW"};
 
 class Event {
 	constructor(eventType, eventToListenFor, arrayOfConditions, addedIndex, tmp, /*0 = once, 1 = until completed, 2 = always*/ locIndex) {
@@ -89,7 +91,6 @@ function addArea() {
 
 
 
-//probable player class for later.
 class Player {
 	constructor() {
 		//this.room = global_currentArea; // rubbish, taken care of by global_currentArea
@@ -99,9 +100,18 @@ class Player {
 		this.hp = this.maxHp;
 		this.dp = 5;
 	}
+	dead() {
+		eventHandler.report(["gameover"]);
+		display("You have died\n\r\n\r\n\r");
+		global_currentArea = global_startArea;
+		var input = document.getElementById("input");
+		input.disabled = true;
+		setTimeout(start, 3000);
+	}
 }
 
 function start() {
+	loadProject();
 	display(global_currentArea.name, true);
 	display(global_currentArea.description);
 	player = new Player();
@@ -116,18 +126,20 @@ function start() {
 function advanceTick() {
 	if(global_currentArea.monsters[0]) {
 		for (i in global_currentArea.monsters) {
-			display("There is a " + global_currentArea.monsters[i].name);
-			player.hp -= global_currentArea.monsters[i].dp;
+			if(global_currentArea.monsters[i].hp < 0) {
+				eventHandler.report(["dead", global_currentArea.monsters[i].name]);
+				display("The " + global_currentArea.monsters[i].name + " died");
+				global_currentArea.monsters.splice(i, 1);
+			}
+			if(global_currentArea.monsters[i]) { //Used so that if a monster dies it doesn't throw up an error saying that it can't show the property of undefined
+				display("There is a " + global_currentArea.monsters[i].name);
+				player.hp -= global_currentArea.monsters[i].dp;
+			}
 		}
 	}
 	if(player.hp < 1) {
-		display("You have died\n\r\n\r\n\r");
-		global_currentArea = global_startArea;
-		var input = document.getElementById("input");
-		input.disabled = true;
-		setTimeout(start, 3000);
-		
-		
+		player.dead();
+		return 0;
 	}
 }
 
@@ -160,8 +172,8 @@ class Area {
 		display(global_currentArea.name, true);
 		display(global_currentArea.description);
 		if(global_currentArea.items.length > 0) {
-			var itemString = "There is a "
-			for (i in global_currentArea.items) {
+			var itemString = "There is a ";
+			for (var i = 0; i < global_currentArea.items.length; i++) {
 				if(i == (global_currentArea.items.length - 1)) {
 					itemString = itemString + global_currentArea.items[i].name + ".";
 				}
@@ -185,6 +197,7 @@ class Area {
 				}
 			}
 			display(destString);
+			
 		}
 		advanceTick();
 	}
@@ -193,6 +206,7 @@ class Area {
 		//console.log(this.destinations[dir]);
 		if (this.destinations[dir] != undefined && this.destinations[dir][1] == false) {
 			global_currentArea = global_areaArray[this.destinations[dir][0]];
+			eventHandler.report(["move", "to", global_currentArea.name]);
 			this.look();
 			//console.log(global_currentArea.description);
 		}
@@ -202,60 +216,12 @@ class Area {
 	}
 }
 
-//broken code as I figure out the workings
-//What events do I want there to be?
-//
-// Area now accessible
-// item added
-// object added
-// monster added
-//
-// Event initators
-//
-// item applied e.g key to lock
-// item gained
-// object moved
-// monster killed
-// object interacted with? (switch, looking somewhere causes trap? etc)
-
-/*
-area_addObject(object, areaIndex) {
-	global_areaArray[areaIndex].objects[object.name] = name;
-}
-
-player_addItem(item) {
-	player.items[item.name] = item;
-}
-area_unlock(areaIndex, direction) {
-	global_areaArray[areaIndex].destinations[direction][1] = false;  //Could be really annoying in ui
-}
-area_addMonster(monster, areaIndex) {
-	global_areaArray[areaIndex].monsters[monster.name] = monster;
-}
-*/
-
-
-/*
-event(arg1, arg2, test, fieldModified, modification) {
-	if (test == "equal") {
-				if(arg1 == arg2) {
-					
-*/
-// How events work
-//
-//event type (if)
-//if type (==, !=, >, <)
-//argument 1
-//argument 2
-//
-//result type (move, add)
-//
-
 
 class Monster {
-	constructor(name = "New_Monster", hp = 10, dp = 1, sp = 1) {
+	constructor(name = "New_Monster", examine="It's unremarkable", hp = 10, dp = 1, sp = 1) {
 		this.class = "monster";
 		this.name = name;
+		this.examine = examine;
 		this.hp = hp;
 		this.dp = dp;
 		this.sp = sp;
@@ -272,6 +238,7 @@ class Item {
 				moveable = false,
 				moveMessage = undefined,
 				edible = false,
+				drinkable = false,
 				heal = undefined,
 				pickable = false,
 				dp = 0) {
@@ -284,6 +251,7 @@ class Item {
 		this.movable = moveable;
 		this.moveMessage = moveMessage;
 		this.edible = edible;
+		this.drinkable = drinkable;
 		this.heal = heal;
 		this.pickable = pickable;
 		this.dp = dp;
@@ -316,8 +284,8 @@ var Destination = function(direction, area) {
 
 
 //load Project
-function loadProject(file) {
-	file = file.split("\r\n\r\n");
+function loadProject() {
+	var file = loadedFile.split("\r\n\r\n");
 	for (var i=0; i < file.length; i++) {
 		var loadedObject = JSON.parse(file[i]);
 		if(loadedObject.class == "area") {
@@ -344,12 +312,11 @@ function loadProject(file) {
 	var newHistory = document.createElement("div");
 	newHistory.setAttribute("id", "history");
 	console.insertBefore(newHistory, input);
-	start();
 }
 
 function receiveText(e) {
-	file = e.target.result;
-	loadProject(file);
+	loadedFile = e.target.result;
+	start();
 }
 
 //load a local project/game/save
@@ -483,18 +450,196 @@ function dealInput(input) {
 	input = input.replace(/>/g, "");	// remove all '>' characters
 	console.log(input);
 	input = input.split(" ");
-	//console.log(global_currentArea.destinations[input[0]]);
-	for (i=0;i<input.length;i++) {
-		//console.log(input[i]);
-		if(input[0] == "MOVE" || input[i] == "GO") {
-			
-			global_currentArea.move(directionKey[input[i+1]]);
-			return 0;
-		}
-		//if (input[0]
+	input[0] = commandKey[input[0]];
+	var i = 0;
+	switch(input[i]) {
+		default:
+			eventHandler.report(["move", "from", global_currentArea.name]);
+			global_currentArea.move(input[i]);
+			break;
 		
-
+		case undefined:
+			display("I don't know what that is");
+			break;
+		
+		case "MOVE":
+			eventHandler.report(["move", "from", global_currentArea.name]);
+			global_currentArea.move(commandKey[input[i+1]]);
+			break;
+			
+		case "KILL":
+			if(input.length < 3) {
+				display("Attack it with what?");
+			}
+			for(var a=0; a < global_currentArea.monsters.length; a++) {
+				if(global_currentArea.monsters[a].name.toUpperCase() == input[i+1]) {
+					if(input[i+2] == "WITH") {
+						i = i + 1;
+					}
+					
+					for(var b=0;b < player.items.length; b++) {
+						if(input[i+2] == player.items[b].name.toUpperCase()) {
+							global_currentArea.monsters[a].hp -= player.items[b].dp;
+							display("You did " + player.items[b].dp + " damge");
+							eventHandler.report(["attack", global_currentArea.monsters[a].name]);
+							advanceTick();
+						}
+					}
+				}
+			}
+			break;
+			
+		case "LOOK":
+			global_currentArea.look();
+			eventHandler.report(["look", global_currentArea.name]);
+			break;
+		
+		case "PICK":
+			if(input[i+1] == "UP"){
+				i = i + 1;
+			}
+			if(input[i+1] == "ALL") {
+				for(var a=0; a < global_currentArea.items.length; a++) {
+					if(global_currentArea.items[a].pickable == true) {
+						display("You take the " + global_currentArea.items[a].name);
+						player.items.push(global_currentArea.items[a]);
+						eventHandler.report(["pick", global_currentArea.items[a].name]);
+					}
+				}
+				global_currentArea.items = [];
+			}
+			for(var a=0; a < global_currentArea.items.length; a++) {
+				if(input[i+1] == global_currentArea.items[a].name.toUpperCase() && global_currentArea.items[a].pickable == true) {
+					display("You take the " + global_currentArea.items[a].name);
+					player.items.push(global_currentArea.items[a]);
+					eventHandler.report(["pick", global_currentArea.items[a].name]);
+					global_currentArea.items.splice(a, 1);
+				}
+			}
+			advanceTick();
+			break;
+		
+		case "DROP":
+			for(var a=0; a < player.items.length;a++) {
+				if(input[i+1] == player.items[a].name.toUpperCase()) {
+					global_currentArea.items.push(player.items[a]);
+					display("You drop the " + player.items[a].name);
+					eventHandler.report(["drop", player.items[a].name]);
+					player.items.splice(a,1);
+				}
+			}
+			advanceTick();
+			break;
+		
+		case "I":
+			for(var a=0;a < player.items.length;a++) {
+				display(player.items[a].name);
+				eventHandler.report(["inventory"])
+			}
+			break;
+		
+		case "EXAMINE":
+			for(var a=0; a<player.items.length;a++) {
+				if(input[i+1] == player.items[a].name.toUpperCase()) {
+					display("You examine the " + player.items[a].name);
+					display(player.items[a].examine);
+					eventHandler.report(["examine", player.items[a].name]);
+				}
+			}
+			for(var a=0; a<global_currentArea.items.length;a++) {
+				if(input[i+1] == global_currentArea.items[a].name.toUpperCase()) {
+					display("You examine the " + global_currentArea.items[a].name);
+					display(global_currentArea.items[a].examine);
+					eventHandler.report(["examine", global_currentArea.items[a].name]);
+				}
+			}
+			for(var a=0; a<global_currentArea.monsters.length;a++) {
+				if(input[i+1] == global_currentArea.monsters[a].name.toUpperCase()) {
+					display("You examine the " + global_currentArea.monsters[a].name);
+					display(global_currentArea.monsters[a].examine);
+					eventHandler.report(["examine", global_currentArea.monsters[a].name]);
+				}
+			}
+			break;
+			
+		case "EAT":
+			for(var a=0;a<player.items.length;a++) {
+				if(input[i+1] == player.items[a].name.toUpperCase() && player.items[a].edible == true) {
+					display("You eat the " + player.items[a].name);
+					if(player.hp + player.items[a].heal > player.maxHp) {
+						display("It restores " + (player.items[a].heal - (player.hp + player.items[a].heal - player.maxHp)) + " health");
+						player.hp = player.maxHp;
+						
+					}
+					else {
+						display("It restores " + player.hp + player.items[a].heal + " health");
+						player.hp = player.hp + player.items[a].heal;
+					}
+					eventHandler.report(["eat", player.items[a].name]);
+					player.items.splice(a, 1);
+					
+				}
+			}
+			advanceTick();
+			break;
+		
+		case "DRINK":
+			for(var a=0;a<player.items.length;a++) {
+				if(input[i+1] == player.items[a].name.toUpperCase() && player.items[a].drinkable == true) {
+					display("You drink the " + player.items[a].name);
+					if(player.hp + player.items[a].heal > player.maxHp) {
+						display("It restores " + (player.items[a].heal - (player.hp + player.items[a].heal - player.maxHp)) + " health");
+						player.hp = player.maxHp;
+						console.log(1);
+						
+					}
+					else {
+						console.log(2);
+						display("It restores " + (player.items[a].heal) + " health");
+						player.hp = player.hp + player.items[a].heal;
+					}
+					eventHandler.report(["drink", player.items[a].name]);
+					player.items.splice(a, 1);
+					
+				}
+			}
+			advanceTick();
+			break;
+		
+		case "THROW":
+			for(var a=0; a<player.items.length;a++) {
+				if(input[i+1] == player.items[a].name.toUpperCase()) {
+					if(input[i+2].toUpperCase() == "AT") {
+						i = i + 1;
+					}
+					for(var b=0;b<global_currentArea.items.length;b++) {
+						if(input[i+2] == global_currentArea.items[b].name.toUpperCase()) {
+							display("You throw the " + player.items[a].name + " at the " + global_currentArea.items[b].name);
+							eventHandler.report(["throw", player.items[a].name, global_currentArea.items[b].name]);
+							global_currentArea.items.push(player.items[a]);
+							player.items.splice(a, 1);
+							
+						}
+					}
+					for(var b=0;b<global_currentArea.monsters.length;b++) {
+						if(input[i+2] == global_currentArea.monsters[b].name.toUpperCase()) {
+							display("You throw the " + player.items[a].name + " at the " + global_currentArea.monsters[b].name);
+							global_currentArea.monsters[b].hp = global_currentArea.monsters[b].hp - player.items[a].dp;
+							display("It does " + player.items[a].dp + " damage");
+							global_currentArea.items.push(player.items[a]);
+							player.items.splice(a, 1);
+							
+						}
+					}
+					
+				}
+			}
+			advanceTick();
+			break;
+		
+		
 	}
+	return 0;
 }
 
 
