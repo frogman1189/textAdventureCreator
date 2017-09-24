@@ -13,15 +13,19 @@
 			</div>
 			<textarea class="consoleInput" id="input" type="text">></textarea>
 		</div>
-		<input type="file" id="srcFile" onchange="loadLocalProjectFile()">Load</input>
+		<input type="file" id="srcFile" onchange="loadLocalProjectFile()" hidden="true">Load</input>
 		<!--<button onclick="loadLocalProjectFile()">Load</button>-->
 		<button onclick="saveProject()">Save Project</button>
 		<button onclick="runMove()">move</button>
-		<div id="area">
+		<div class="area">
 			<form id="addArea">
-				<textarea id="name">NAME</textarea>
-				<input id="description">DESCRIPTION</input>
-				<input id="startArea" value="true">StartArea</input>
+				<p>NAME:</p>
+				<input id="name"></input>
+				<p>DESCRIPTION:</p>
+				<input id="description"></input>
+				<p>StartArea:</p>
+				<input id="startArea" value="true"></input>
+				
 				<button onclick="addArea()">add Area</button>
 			</form>
 				

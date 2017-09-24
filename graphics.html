@@ -1,0 +1,174 @@
+<!-- Graphical Display Experiment -->
+<html>
+<head>
+<link rel="stylesheet" href="graphics.css"></link>
+<title>
+Graphical Display
+</title>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="txtadventure.js"></script>
+<script src="graphics.js"></script>
+ <script>
+  $( function() {
+   //$(".pan").animate({ 'zoom' : 1.5}, 0);
+    $( ".window" ).draggable();
+	//$( ".pan").draggable();
+	$( ".pan").on("pan", function (e) {console.log(e)});
+  } );
+
+  </script>
+</head>
+<body onload="setInputListener()">
+<!--<div class="titlebar">
+<p>TEXT ADVENTURE</p>
+</div>-->
+
+
+
+<div class="content">
+<div class="pan" id="pan"> <!-- allows panning, hopefully-->
+<div class="window">
+<div class="window-bar">
+<p style="font-size:10pt;text-align:center;float:center;">---Area---</p>
+</div>
+<ul>
+<li>
+<p class="title">Name:</p>
+<input type="text" class="inline" id="name" disabled value="SEA"></input>
+</li>
+<li>
+<p class="title">Description:</p>
+<textarea disabled class="inline" id="name">Wet... Rather Wet</textarea>
+</li>
+<li style="display:none;">
+<p class="title">Destinations:</p>
+<p class="inline" id="name">N:Beach, E:Forrest, S:Valley, W:Mountains</p>
+</li>
+<li style="display:none;">
+<p class="title">Items:</p>
+<p class="inline" id="name">NONE</p>
+</li>
+<li style="display:none;">
+<p class="title">Monsters:</p>
+<p class="inline" id="name">NONE</p>
+</li>
+<li style="display:none;">
+<p class="title">Start Area:</p>
+<input id="startarea" type="checkbox"></input>
+</li>
+</ul>
+</div>
+
+<div class="window">
+<ul>
+<li>
+<p style="font-size:10pt;text-align:center;float:center;">---ITEM---</p>
+</li>
+<li>
+<p class="title">Name:</p>
+<input type="text" class="inline" id="name" disabled value="Sword"></input>
+</li>
+<li>
+<p class="title">moveable:</p>
+<input type="checkbox"></input>
+<p class="title">pickable:</p>
+<input type="checkbox"></input>
+<p class="title">edible:</p>
+<input type="checkbox"></input>
+<p class="title">drinkable:</p>
+<input type="checkbox"></input>
+</li>
+<li>
+<p class="title">Examine:</p>
+<textarea class="inline" id="name" disabled>It's not very remarkable</textarea>
+</li>
+<li>
+<p class="title">Smell:</p>
+<textarea class="inline" id="name" disabled>You sniff it. It has no smell</textarea>
+</li>
+<li>
+<p class="title">Listen:</p>
+<textarea class="inline" id="name" disabled>You shake it. It doesn't make any noise.</textarea>
+</li>
+<li>
+<p class="title">Examine:</p>
+<textarea class="inline" id="name" disabled>It's not very remarkable</textarea>
+</li>
+<li>
+<p class="title">Move Message:</p>
+<textarea class="inline" id="name" disabled>You moved it. What a mighty feat. *Heavy Sarcasm*</textarea>
+</li>
+<li>
+<p class="title">Heal:</p>
+<input type="number" class="inline" id="name" value="20" disabled></input>
+</li>
+<li>
+<p class="title">Dp:</p>
+<input type="number" class="inline" id="name" value="20" disabled></input>
+</li>
+</ul>
+</div>
+
+<div class="window">
+<ul>
+<li>
+<p style="font-size:10pt;text-align:center;float:center;">---MONSTER---</p>
+</li>
+<li>
+<p class="title">NAME</p>
+<input type="text" disabled value="UNTITILED MONSTER"></input>
+</li>
+<li>
+<p class="title">EXAMINE</p>
+<textarea disabled>You see a monster</textarea>
+</li>
+<li>
+<p class="title">HP</p>
+<input type="number" value="10"></input>
+</li>
+<li>
+<p class="title">DP</p>
+<input type="number" value="10"></input>
+</li>
+<li>
+<p class="title">Drop</p>
+<select>
+	<option value="1">Sword</option>
+</select>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<button onclick="zoomIn()" style="position:fixed;right:0;top:0;">+</button>
+<button onclick="zoomOut()" style="position:fixed;right:0;top:30;">-</button>
+<div class="sidebar">
+<div class="sidebar-add">
+<p>LOAD PROJECT <img src="assets/add.svg" width="auto" height="auto"></img></p><input type="file" id="srcFile" onchange="loadLocalProjectFile()" style="opacity:0;position:absolute;width:inherit;height:inherit;left:10"></input>
+</div>
+<div class="sidebar-add">
+<p>SAVE PROJECT <img src="assets/add.svg" width="auto" height="auto"></img></p>
+</div>
+<div class="sidebar-add" onclick="addArea()">
+<p>AREA <img src="assets/add.svg" width="auto" height="auto"></img></p>
+</div>
+<div class="sidebar-add">
+<p>ITEM <img src="assets/add.svg" width="auto" height="auto"></img></p>
+</div>
+<div class="sidebar-add">
+<p>MONSTER <img src="assets/add.svg" width="auto" height="auto"></img></p>
+</div>
+<div class="sidebar-add">
+<p>EVENT <img src="assets/add.svg" width="auto" height="auto"></img></p>
+</div>
+</div>
+<div id="console" class="console">
+<div id="console-bar" class="window-bar">
+<img src="assets/add.svg" width="15pt" height="auto"></img>
+</div>
+<div id="history">			
+</div>
+<textarea class="consoleInput" id="input" type="text">></textarea>
+</div>
+</body>
