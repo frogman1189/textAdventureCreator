@@ -1,14 +1,16 @@
 //Graphical Interface Script
-//makes windows draggable. Copied from https://jqueryui.com/draggable/
+
+
+//global zoom value and different zoom functions
 var zoom=1;
 
 function zoomIn(e) {
 	zoom = zoom + 0.5;
-	if(zoom < 1 && zoom > -1) {
+	if(zoom < 1 && zoom > -1) {										//used to help prevent repeated zoom frames from equal fraction stuff (i.e 1/0.5 == 2 and so the 2 times zoom has the potential to be repeated at -0.5 and 2
 		zoom = 1;
 	}
 	if(Math.sign(zoom) == -1) {
-		$(".window").animate({"zoom": 1/Math.abs(zoom)}, 0);
+		$(".window").animate({"zoom": 1/Math.abs(zoom)}, 0);		//if negative use fractional zoom out
 	}
 	else {
 		$(".window").animate({"zoom": zoom}, 0);
@@ -17,12 +19,12 @@ function zoomIn(e) {
 }
 function zoomOut(e) {
 	zoom = zoom - 0.5;
-	if(zoom < 1 && zoom > -1) {
+	if(zoom < 1 && zoom > -1) {										//used to help prevent repeated zoom frames from equal fraction stuff (i.e 1/0.5 == 2 and so the 2 times zoom has the potential to be repeated at -0.5 and 2
 		zoom = -1;
 	}
 	console.log(zoom);
 	if(Math.sign(zoom) == -1) {
-		$(".window").animate({"zoom": 1/Math.abs(zoom)}, 0);
+		$(".window").animate({"zoom": 1/Math.abs(zoom)}, 0);		//if negative use fractional zoom out
 	}
 	else {
 		$(".window").animate({"zoom": zoom}, 0);
@@ -30,7 +32,177 @@ function zoomOut(e) {
 	return 0;
 }
 
-function addArea(iname = "Untitled Area", idescription = "Blank", idestinations = {}, iitems = {}, imonsters = {}, istartArea = false, index=global_areaArray.length) {
+
+
+
+//remakes the select element for areas which is used for selecting destinations
+function reloadAreaDataList() {
+	var areaDataList = document.createElement("select"); //declare select element
+	areaDataList.setAttribute("id", "areaDataList");
+	for(var i=0;i<global_areaArray;i++) {				//iterate through areas adding them as options with index as value as that is used in game code, and name as seen value as that is how users differentiate between areas.
+		var option = document.createElement("option");
+		option.setAttribute("value", i);
+		option.append(document.createTextNode(global_areaArray[i].name));
+		areaDataList.append(option);
+	}
+	return areaDataList;
+}
+
+//remakes the select element for items which is used for selecting items for monster drops or present in areas
+function reloadItemDataList() {
+	var itemDataList = document.createElement("select");
+	itemDataList.setAttribute("id", "itemDataList");
+	for(var i=0;i<global_itemArray;i++) {				//iterate through areas adding them as options with index as value as that is used in game code, and name as seen value as that is how users differentiate between areas.
+		var option = document.createElement("option");
+		option.setAttribute("value", i);
+		option.append(document.createTextNode(global_itemArray[i].name));
+		itemDataList.append(option);
+	}
+	return itemDataList;
+}
+
+
+//remakes the select element for monsters which is used for selecting monsters to be present in areas
+function reloadMonsterDataList() {
+	var monsterDataList = document.createElement("select");
+	monsterDataList.setAttribute("id", "monsterDataList");
+	for(var i=0;i<global_monsterArray;i++) {				//iterate through areas adding them as options with index as value as that is used in game code, and name as seen value as that is how users differentiate between areas.
+		var option = document.createElement("option");
+		option.setAttribute("value", i);
+		option.append(document.createTextNode(global_monsterArray[i].name));
+		monsterDataList.append(option);
+	}
+	return monsterDataList;
+}
+
+
+//Load area into edit panel
+function loadArea(index) {
+	
+	//if the index equals -1 create a new Area (the new area option has a value of -1)
+	if(index == -1) {
+		index = global_areaArray.length;		//grab length before pushing new area to save a math operation
+		new Area();
+	}
+	
+	// assign area to var to make easier
+	area = global_areaArray[index];
+	
+	//set the edit-panel name input to the area name
+	document.getElementById("area-name").value = area.name;
+	
+	//set the edit-panel description to the area description
+	document.getElementById("area-description").innerText = area.description;
+	
+	//set the edit-panel destinations list to area destinations
+	var destText = document.getElementById("area-destinations-text").innerText="";
+	// get keys of destinations so can iterate over and display each key pair
+	var keys = Object.keys(area.destinations);
+	for(var i=0;i<keys;i++) {
+		destText = destText + "|" + keys[i] + ":" + area.destinations[keys[i]];
+	}
+	destText = destText + "|";
+	
+	
+	//Same as destinations except for items
+	var itemText = document.getElementById("area-items-text").innerText="";
+	var keys = Object.keys(area.items);
+	for(var i=0;i<keys;i++) {
+		itemText = itemText + "|" + keys[i] + ":" + area.items[keys[i]];
+	}
+	itemText = itemText + "|";
+	
+	//Same as destinations except for monsters
+	var monsterText = document.getElementById("area-monsters-text").innerText="";
+	var keys = Object.keys(area.monsters);
+	for(var i=0;i<keys;i++) {
+		monstersText = monstersText + "|" + keys[i] + ":" + area.monsters[keys[i]];
+	}
+	monsterText = monsterText + "|";
+	
+	// if the area is start area checks the check box, else unchecks it.
+	document.getElementById("area-startArea").checked = area.startArea;
+}
+
+
+function loadItem(index) {
+	if(index == -1) {
+		index = global_itemArray.length;		//saves a math operation
+	}
+}
+
+
+
+function loadDests() {
+	var dest = document.getElementById("area-dest-select");
+	dest.innerHTML = null;
+	for (var i=0;i<global_areaArray.length;i++) {
+		var option = document.createElement("option");
+		option.setAttribute("value",i);
+		option.innerText=global_areaArray[i].name;
+		dest.append(option);
+	}
+}
+
+function loadItems() {
+	var items = document.getElementById("area-item-select");
+	items.innerHTML = null;
+	for (var i=0;i<global_itemArray.length;i++) {
+		var option = document.createElement("option");
+		option.setAttribute("value",i);
+		option.innerText=global_itemArray[i].name;
+		items.append(option);
+	}
+	var items = document.getElementById("monster-item-select");
+	items.innerHTML = null;
+	for (var i=0;i<global_itemArray.length;i++) {
+		var option = document.createElement("option");
+		option.setAttribute("value",i);
+		option.innerText=global_itemArray[i].name;
+		items.append(option);
+	}
+}
+function loadMonsters() {
+	var monsters = document.getElementById("area-monster-select");
+	monsters.innerHTML = null;
+	for (var i=0;i<global_monsterArray.length;i++) {
+		var option = document.createElement("option");
+		option.setAttribute("value",i);
+		option.innerText=global_monsterArray[i].name;
+		monsters.append(option);
+	}
+}
+
+
+//used to show/hide certain options (the different class panels and adding/removing of Dest/item/monster sections
+function areaPanel() {
+	loadDests();
+	loadItems();
+	loadMonsters();
+	document.getElementById("area-edit").style.display=null;
+	document.getElementById("item-edit").style.display='none';
+	document.getElementById("monster-edit").style.display='none';
+}
+
+function itemPanel() {
+	document.getElementById("item-edit").style.display=null;
+	document.getElementById("area-edit").style.display='none';
+	document.getElementById("monster-edit").style.display='none';
+}
+
+function monsterPanel() {
+	loadItems();
+	document.getElementById("monster-edit").style.display=null;
+	document.getElementById("item-edit").style.display='none';
+	document.getElementById("area-edit").style.display='none';
+}
+
+function addArea() {
+	
+}
+
+
+/*function addArea(iname = "Untitled Area", idescription = "Blank", idestinations = {}, iitems = {}, imonsters = {}, istartArea = false, index=global_areaArray.length) {
 	//create div which all elements in body window attatch to.
 	var body = document.createElement("div");
 	body.setAttribute("class", "window");
@@ -169,7 +341,7 @@ function addArea(iname = "Untitled Area", idescription = "Blank", idestinations 
 	}
 	
 	
-}
+}*/
 
 
 
@@ -212,9 +384,9 @@ function loadProject() {
 			global_monsterArray[loadedObject.index] = loadedObject;
 		}
 	}
-	for(var i=0;i<global_areaArray.length;i++) {
+	/*for(var i=0;i<global_areaArray.length;i++) {
 		addArea(global_areaArray[i].name, global_areaArray[i].description, global_areaArray[i].destinations, global_areaArray[i].items, global_areaArray[i].monsters, global_areaArray[i].startArea, global_areaArray[i].index);
-	}
+	}*/
 	var old = document.getElementById("history");
 	var iconsole = document.getElementById("console");
 	var input = document.getElementById("input");

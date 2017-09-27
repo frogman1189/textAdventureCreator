@@ -20,132 +20,15 @@ Graphical Display
   </script>
 </head>
 <body onload="setInputListener()">
-<!--<div class="titlebar">
-<p>TEXT ADVENTURE</p>
-</div>-->
+<div class="titlebar">
+<!--<p>TEXT ADVENTURE</p>-->
+<div style="width:20%;">
+<p>LOAD PROJECT <img src="assets/add.svg" width="auto" height="auto"></img></p><input type="file" id="srcFile" onchange="loadLocalProjectFile()" style="opacity:0;position:absolute;width:inherit;height:inherit;top:0"></input>
+</div>
+</div>
 
 
-
-<div class="content">
-<div class="pan" id="pan"> <!-- allows panning, hopefully-->
-<div class="window">
-<div class="window-bar">
-<p style="font-size:10pt;text-align:center;float:center;">---Area---</p>
-</div>
-<ul>
-<li>
-<p class="title">Name:</p>
-<input type="text" class="inline" id="name" disabled value="SEA"></input>
-</li>
-<li>
-<p class="title">Description:</p>
-<textarea disabled class="inline" id="name">Wet... Rather Wet</textarea>
-</li>
-<li style="display:none;">
-<p class="title">Destinations:</p>
-<p class="inline" id="name">N:Beach, E:Forrest, S:Valley, W:Mountains</p>
-</li>
-<li style="display:none;">
-<p class="title">Items:</p>
-<p class="inline" id="name">NONE</p>
-</li>
-<li style="display:none;">
-<p class="title">Monsters:</p>
-<p class="inline" id="name">NONE</p>
-</li>
-<li style="display:none;">
-<p class="title">Start Area:</p>
-<input id="startarea" type="checkbox"></input>
-</li>
-</ul>
-</div>
-
-<div class="window">
-<ul>
-<li>
-<p style="font-size:10pt;text-align:center;float:center;">---ITEM---</p>
-</li>
-<li>
-<p class="title">Name:</p>
-<input type="text" class="inline" id="name" disabled value="Sword"></input>
-</li>
-<li>
-<p class="title">moveable:</p>
-<input type="checkbox"></input>
-<p class="title">pickable:</p>
-<input type="checkbox"></input>
-<p class="title">edible:</p>
-<input type="checkbox"></input>
-<p class="title">drinkable:</p>
-<input type="checkbox"></input>
-</li>
-<li>
-<p class="title">Examine:</p>
-<textarea class="inline" id="name" disabled>It's not very remarkable</textarea>
-</li>
-<li>
-<p class="title">Smell:</p>
-<textarea class="inline" id="name" disabled>You sniff it. It has no smell</textarea>
-</li>
-<li>
-<p class="title">Listen:</p>
-<textarea class="inline" id="name" disabled>You shake it. It doesn't make any noise.</textarea>
-</li>
-<li>
-<p class="title">Examine:</p>
-<textarea class="inline" id="name" disabled>It's not very remarkable</textarea>
-</li>
-<li>
-<p class="title">Move Message:</p>
-<textarea class="inline" id="name" disabled>You moved it. What a mighty feat. *Heavy Sarcasm*</textarea>
-</li>
-<li>
-<p class="title">Heal:</p>
-<input type="number" class="inline" id="name" value="20" disabled></input>
-</li>
-<li>
-<p class="title">Dp:</p>
-<input type="number" class="inline" id="name" value="20" disabled></input>
-</li>
-</ul>
-</div>
-
-<div class="window">
-<ul>
-<li>
-<p style="font-size:10pt;text-align:center;float:center;">---MONSTER---</p>
-</li>
-<li>
-<p class="title">NAME</p>
-<input type="text" disabled value="UNTITILED MONSTER"></input>
-</li>
-<li>
-<p class="title">EXAMINE</p>
-<textarea disabled>You see a monster</textarea>
-</li>
-<li>
-<p class="title">HP</p>
-<input type="number" value="10"></input>
-</li>
-<li>
-<p class="title">DP</p>
-<input type="number" value="10"></input>
-</li>
-<li>
-<p class="title">Drop</p>
-<select>
-	<option value="1">Sword</option>
-</select>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<button onclick="zoomIn()" style="position:fixed;right:0;top:0;">+</button>
-<button onclick="zoomOut()" style="position:fixed;right:0;top:30;">-</button>
-<div class="sidebar">
-<div class="sidebar-add">
-<p>LOAD PROJECT <img src="assets/add.svg" width="auto" height="auto"></img></p><input type="file" id="srcFile" onchange="loadLocalProjectFile()" style="opacity:0;position:absolute;width:inherit;height:inherit;left:10"></input>
+<!-- <p>LOAD PROJECT <img src="assets/add.svg" width="auto" height="auto"></img></p><input type="file" id="srcFile" onchange="loadLocalProjectFile()" style="opacity:0;position:absolute;width:inherit;height:inherit;left:10"></input>
 </div>
 <div class="sidebar-add">
 <p>SAVE PROJECT <img src="assets/add.svg" width="auto" height="auto"></img></p>
@@ -160,7 +43,227 @@ Graphical Display
 <p>MONSTER <img src="assets/add.svg" width="auto" height="auto"></img></p>
 </div>
 <div class="sidebar-add">
-<p>EVENT <img src="assets/add.svg" width="auto" height="auto"></img></p>
+<p>EVENT <img src="assets/add.svg" width="auto" height="auto"></img></p> -->
+
+
+<div class="content">
+<div class="pan" id="pan"> <!-- allows panning, hopefully-->
+
+
+
+
+
+</div>
+</div>
+<button onclick="zoomIn()" style="position:fixed;right:0;top:0;">+</button>
+<button onclick="zoomOut()" style="position:fixed;right:0;top:30;">-</button>
+<div class="sidebar">
+<div class="sidebar-add">
+
+<!-- Area-edit Panel -->
+<div id="area-edit" style="">
+<ul>
+<li>
+<p class="title" style="text-align:center">AREA</p>
+</li>
+<hr>
+<li>
+<select id="area" onchange="loadArea(this.value)">
+<option  value="null"></option>
+<option value="-1">New Area</option>
+</select>
+</li>
+<hr>
+<li>
+<p class="title">Name:</p>
+<input type="text" class="inline" id="area-name" value=""></input>
+</li>
+<hr>
+<li>
+<p class="title">Description:</p>
+<textarea class="inline" id="area-description"></textarea>
+</li>
+<hr>
+<li>
+<p class="title">Destinations:</p>
+<p class="inline" id="area-destinations-text"></p>
+<select id="area-dest-select">Area:</select>
+<button onclick="areaAddDest()">Add Destination</button><!-- need to add functions-->
+<button onclick="areaRemoveDest()">Remove Destination</button>
+<!--<div id="removeDest" style="display:none;"> <!-- need to add functions-->
+<!--<input id="area-removeDest-direction" style="width:30pt;">Direction:</input>
+<button onclick="removeDest()">Remove</button>
+</div>-->
+</li>
+<hr>
+<li>
+<p class="title">Items:</p>
+<p class="inline" id="area-items-text">NONE</p>
+<select id="area-item-select">Item:</select>
+<button onclick="areaAddItem()">Add Item</button><!-- need to add functions-->
+<button onclick="areaRemoveItem()">Remove Item</button>
+</li>
+<hr>
+<li>
+<p class="title">Monsters:</p>
+<p class="inline" id="area-monsters-text">NONE</p>
+<select id="area-monster-select">Monster:</select>
+<button onclick="areaAddMonster()">Add Monster</button><!-- need to add functions-->
+<button onclick="areaRemoveMonster()">Remove Monster</button>
+</li>
+<hr>
+<li>
+<p class="title">Start Area:</p>
+<input type="checkbox" id="area-startArea"></input>
+</li>
+<hr>
+<li>
+<button onclick="saveArea()">Save</button>
+</li>
+</ul>
+</div>
+<!-- Area-edit Panel end -->
+
+
+
+<!-- Item-edit Panel -->
+<div id="item-edit" style="display:none;">
+<ul>
+<li>
+<p class="title">ITEM</p>
+</li>
+<hr>
+<li>
+<select id="item" onchange="loadItem(this.value)">
+<option  value="null"></option>
+<option value="-1">New Item</option>
+</select>
+</li>
+<hr>
+<li>
+<p class="title">Name:</p>
+<input type="text" class="inline" id="name"  value="Sword"></input>
+</li>
+<hr>
+<li>
+<p class="title">moveable:</p>
+<input type="checkbox"></input>
+</li>
+<li>
+<p class="title">pickable:</p>
+<input type="checkbox"></input>
+</li>
+<li>
+<p class="title">edible:</p>
+<input type="checkbox"></input>
+</li>
+<li>
+<p class="title">drinkable:</p>
+<input type="checkbox"></input>
+</li>
+<hr>
+<li>
+<p class="title">Examine:</p>
+<textarea class="inline" id="name" >It's not very remarkable</textarea>
+</li>
+<li>
+<p class="title">Smell:</p>
+<textarea class="inline" id="name" >You sniff it. It has no smell</textarea>
+</li>
+<hr>
+<li>
+<p class="title">Listen:</p>
+<textarea class="inline" id="name" >You shake it. It doesn't make any noise.</textarea>
+</li>
+<hr>
+<li>
+<p class="title">Examine:</p>
+<textarea class="inline" id="name" >It's not very remarkable</textarea>
+</li>
+<hr>
+<li>
+<p class="title">Move Message:</p>
+<textarea class="inline" id="name" >You moved it. What a mighty feat. *Heavy Sarcasm*</textarea>
+</li>
+<hr>
+<li>
+<p class="title">Heal:</p>
+<input type="number" class="inline" id="name" value="20" ></input>
+</li>
+<hr>
+<li>
+<p class="title">Dp:</p>
+<input type="number" class="inline" id="name" value="20" ></input>
+</li>
+<hr>
+<li>
+<button onclick="saveItem()">Save</button>
+</li>
+</ul>
+</div>
+
+
+
+<!-- Monster Edit Panel -->
+<div id="monster-edit" style="display:none;">
+<ul>
+<li>
+<p class="title">MONSTER</p>
+</li>
+<hr>
+<li>
+<select id="monster" onchange="loadMonster(this.value)">
+<option  value="null"></option>
+<option value="-1">New Area</option>
+</select>
+</li>
+<hr>
+<li>
+<p class="title">NAME</p>
+<input type="text" value="UNTITILED MONSTER"></input>
+</li>
+<hr>
+<li>
+<p class="title">EXAMINE</p>
+<textarea>You see a monster</textarea>
+</li>
+<hr>
+<li>
+<p class="title">HP</p>
+<input type="number" value="10"></input>
+</li>
+<hr>
+<li>
+<p class="title">DP</p>
+<input type="number" value="10"></input>
+</li>
+<hr>
+<li>
+<p class="title">Drop</p>
+<!-- Works better if addItem/removeItem submits rather than reveals form-->
+<select id="monster-item-select">Item:</select>
+<button onclick="monsterAddItem()">Add Item</button><!-- need to add functions-->
+<button onclick="monsterRemoveItem()">Remove Item</button>
+</li>
+<hr>
+<li>
+<button onclick="saveMonster()">Save</button>
+</li>
+</ul>
+</div>
+<div style="left:20%;top:5%;position:fixed">
+<ul>
+<li>
+<button onclick="areaPanel()">|"|</button>
+</li>
+<li>
+<button onclick="itemPanel()">+=></button>
+</li>
+<li>
+<button onclick="monsterPanel()">O_o</button>
+</li>
+</div>
+
 </div>
 </div>
 <div id="console" class="console">

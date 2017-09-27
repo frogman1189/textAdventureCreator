@@ -122,7 +122,7 @@ function advanceTick() {
 //Class Area, used to manage each area in the text adventure
 class Area {
 	// contruct area -- declare all variables
-	constructor(name = "New Area", description = "Blank Area", destinations = {}, items = {}, monsters = {}, startArea = false, index=global_areaArray.length) {
+	constructor(name = "New Area", description = "Blank Area", destinations = {}, items = {}, monsters = {}, startArea = false) {
 		this.class = "area"; //required for applying class prototype when loading json project files
 		this.name = name;
 		this.description = description;
@@ -131,8 +131,8 @@ class Area {
 		this.monsters = {};
 		this.startArea = startArea;
 		this.currentArea = false; //for loading saves. If this is true in json string then it gets set to current area during loading
-		//global_areaArray.push(this);
-		//this.index = global_areaArray.length - 1;
+		global_areaArray.push(this);
+		this.index = global_areaArray.length - 1;
 		if(startArea == true) {
 			global_startArea = this;
 			global_currentArea = this; //by default startArea is set to current area when first constructed, however saves will change this and this logic is not applied when loaded by json.
