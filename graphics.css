@@ -4,6 +4,8 @@ body {
 	margin: 0 0 0 0;
 }
 p {
+	display:block;
+	word-wrap:break-word;
 	font-family:"Lucida Console", Monospace;
 	font-size:8pt;
 }

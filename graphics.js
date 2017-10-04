@@ -1,6 +1,9 @@
 //Graphical Interface Script
 
-
+//declare variables
+global_areaArray = [];
+global_areaArray = [];
+global_areaArray = [];
 //global zoom value and different zoom functions
 var zoom=1;
 
@@ -33,7 +36,64 @@ function zoomOut(e) {
 }
 
 
+function saveArea() {
+	var area = global_areaArray[document.getElementById("area").value];
+	area.name = document.getElementById("area-name").value;
+	area.description = document.getElementById("area-description").value;
+	area.startArea = document.getElementById("area-startArea").checked;
+	area.currentArea = document.getElementById("area-startArea").checked;		//used so that startarea = currentarea and will load game. not used for saves, would muck those up.
+	global_currentArea = area;
+	loadAreaPanel(area.index);
+}
 
+function saveItem() {
+	var item = global_itemArray[document.getElementById("item").value];
+	item.name = document.getElementById("item-name").value;
+	item.moveable = document.getElementById("moveable").checked;
+	item.pickable = document.getElementById("pickable").checked;
+	item.edible = document.getElementById("edible").checked;
+	item.drinkable = document.getElementById("drinkable").checked;
+	item.examine = document.getElementById("item-examine").value;
+	item.smell = document.getElementById("item-smell").value;
+	item.listen = document.getElementById("item-listen").value;
+	item.moveMessage = document.getElementById("item-movemsg").value;
+	item.heal = parseInt(document.getElementById("item-heal").value);
+	item.dp = parseInt(document.getElementById("item-dp").value);
+	loadItemPanel(item.index);
+}
+
+function saveArea() {
+	var area = global_areaArray[document.getElementById("area").value];
+	area.name = document.getElementById("area-name").value;
+	area.description = document.getElementById("area-description").value;
+	area.startArea = document.getElementById("area-startArea").checked;
+	area.currentArea = document.getElementById("area-startArea").checked;		//used so that startarea = currentarea and will load game. not used for saves, would muck those up.
+	global_currentArea = area;
+	loadAreaPanel(area.index);
+}
+
+function areaAddDest() {
+	global_areaArray[document.getElementById("area").value].destinations[document.getElementById("area-dest-dir").value.toUpperCase()] = parseInt(document.getElementById("area-dest-select").value);
+	loadAreaPanel(document.getElementById("area").value);
+}
+function areaRemoveDest() {
+	delete global_areaArray[document.getElementById("area").value].destinations[document.getElementById("area-dest-dir").value.toUpperCase()];
+	loadAreaPanel(document.getElementById("area").value);
+}
+
+function areaAddItem() {
+	global_areaArray[document.getElementById("area").value].items.push(global_itemArray[document.getElementById("area-item-select").value]);
+	loadAreaPanel(document.getElementById("area").value);
+}
+function areaRemoveItem() {
+	global_areaArray[document.getElementById("area").value].items.splice(parseInt(document.getElementById("area-item-select").value), 1);
+	loadAreaPanel(document.getElementById("area").value);
+}
+
+function monsterAddItem() {
+	global_monsterArray[document.getElementById("monster").value].drop.push(global_itemArray[document.getElementById("monster-item-select").value]);
+	loadMonsterPanel(document.getElementById("monster").value);
+}
 
 //remakes the select element for areas which is used for selecting destinations
 function reloadAreaDataList() {
@@ -77,17 +137,28 @@ function reloadMonsterDataList() {
 
 
 //Load area into edit panel
-function loadArea(index) {
-	
+function loadAreaPanel(index) {
+	var area;
 	//if the index equals -1 create a new Area (the new area option has a value of -1)
 	if(index == -1) {
 		index = global_areaArray.length;		//grab length before pushing new area to save a math operation
 		new Area();
+		loadDests();
+		document.getElementById("area").value = index;
 	}
-	
+	else {
+		loadDests();
+	}
+	//document.getElementById("area").value = index;
 	// assign area to var to make easier
-	area = global_areaArray[index];
-	
+	if(index == 'null') {
+		area = {'name':"", 'description':'', 'destinations':{}, 'items':[], 'monsters':[], 'startArea':false}
+		//alert("test");
+	}
+	else {
+		area = global_areaArray[index];
+	}
+	console.log(index, area);
 	//set the edit-panel name input to the area name
 	document.getElementById("area-name").value = area.name;
 	
@@ -95,28 +166,29 @@ function loadArea(index) {
 	document.getElementById("area-description").innerText = area.description;
 	
 	//set the edit-panel destinations list to area destinations
-	var destText = document.getElementById("area-destinations-text").innerText="";
+	var destText = document.getElementById("area-destinations-text");
+	destText.innerText = "";
+	
 	// get keys of destinations so can iterate over and display each key pair
 	var keys = Object.keys(area.destinations);
-	for(var i=0;i<keys;i++) {
-		destText = destText + "|" + keys[i] + ":" + area.destinations[keys[i]];
+	for(var i=0;i<keys.length;i++) {
+		destText.innerText = destText.innerText + "|" + keys[i] + ":" + global_areaArray[area.destinations[keys[i]]].name;
 	}
-	destText = destText + "|";
+	destText.innerText = destText.innerText + "|";
 	
 	
 	//Same as destinations except for items
-	var itemText = document.getElementById("area-items-text").innerText="";
-	var keys = Object.keys(area.items);
-	for(var i=0;i<keys;i++) {
-		itemText = itemText + "|" + keys[i] + ":" + area.items[keys[i]];
+	var itemText = document.getElementById("area-items-text");
+	itemText.innerText = "";
+	for(var i=0;i<area.items.length;i++) {
+		itemText.innerText = itemText.innerText + "|" + area.items[i].name;
 	}
 	itemText = itemText + "|";
 	
 	//Same as destinations except for monsters
 	var monsterText = document.getElementById("area-monsters-text").innerText="";
-	var keys = Object.keys(area.monsters);
-	for(var i=0;i<keys;i++) {
-		monstersText = monstersText + "|" + keys[i] + ":" + area.monsters[keys[i]];
+	for(var i=0;i<area.monsters.length;i++) {
+		monstersText = monstersText + "|" + area.monsters[i].name;
 	}
 	monsterText = monsterText + "|";
 	
@@ -125,14 +197,75 @@ function loadArea(index) {
 }
 
 
-function loadItem(index) {
+function loadItemPanel(index) {
+	var item;
 	if(index == -1) {
 		index = global_itemArray.length;		//saves a math operation
+		new Item();
+		loadItems();
+		document.getElementById("item").value = index;
 	}
+	else {
+		loadItems();
+	}
+	
+	if(index == 'null') {
+		//alert(index);
+		item = {'name':'', 'moveable':false, 'pickable':false, 'edible':false, 'drinkable':false, 'examine':'', 'smell':'', 'listen':'', 'moveMessage':'', 'heal':'', 'dp':''}
+	}
+	else {
+		item = global_itemArray[index]; 			//load item instance into var for easy writing
+	}
+	console.log(index, item);
+	document.getElementById("item-name").value = item.name;
+	document.getElementById("moveable").checked = item.moveable;		//fairly sure I don't actually have this functionality in the game -- oops -- though was planning on adding it. Well, now the ages can theorise about what it does.
+	document.getElementById("pickable").checked = item.pickable;
+	document.getElementById("edible").checked = item.edible;
+	document.getElementById("drinkable").checked = item.drinkable;
+	document.getElementById("item-examine").innerText = item.examine;
+	document.getElementById("item-smell").innerText = item.smell;
+	document.getElementById("item-listen").innerText = item.listen;
+	document.getElementById("item-movemsg").innerText = item.moveMessage;
+	document.getElementById("item-heal").value = item.heal;
+	document.getElementById("item-dp").innerText = item.dp;
+	
+	
+}
+
+function loadMonsterPanel(index) {
+	var monster
+	if(index == -1) {
+		index = global_monsterArray.length;
+		new Monster();
+		loadMonsters();
+		document.getElementById("monster").value = index;
+	}
+	else {
+		document.getElementById("monster").value = index;
+	}
+	if(index == 'null') {
+		monster = {'name':'', 'examine':'', 'hp':'', 'dp':'', 'drop':[]};
+	}
+	else {
+		monster = global_monsterArray[index];
+	}
+	console.log(index, monster);
+	document.getElementById("monster-name").value = monster.name;
+	document.getElementById("monster-examine").innerText = monster.examine;
+	document.getElementById("monster-hp").value = monster.hp;
+	document.getElementById("monster-dp").value = monster.dp;
+	
+	var itemText = document.getElementById("monster-items-text");
+	itemText.innerText = '';
+	for(var i=0;i<monster.drop.length;i++) {
+		itemText.innerText = itemText.innerText + "|" + monster.drop[i].name;
+	}
+	itemText.innerText = itemText.innerText + "|";
+	
 }
 
 
-
+//while hardcoded repeating is generally presumed to be bad, this will be repeated a lot so I think hardcoded instructions will save more time than jumping (looping and using functions, I presume its based upon the jump assembly commands at some level)
 function loadDests() {
 	var dest = document.getElementById("area-dest-select");
 	dest.innerHTML = null;
@@ -141,6 +274,28 @@ function loadDests() {
 		option.setAttribute("value",i);
 		option.innerText=global_areaArray[i].name;
 		dest.append(option);
+	}
+	var dest = document.getElementById("area");
+	var previousValue = dest.value;
+	dest.innerHTML = null;
+	var blankOption = document.createElement("option");
+	blankOption.setAttribute("value",null);
+	dest.append(blankOption);
+	var newAreaOption = document.createElement("option");
+	newAreaOption.setAttribute("value",-1);
+	newAreaOption.innerText="new Area";
+	dest.append(newAreaOption);
+	for (var i=0;i<global_areaArray.length;i++) {
+		var option = document.createElement("option");
+		option.setAttribute("value",i);
+		option.innerText=global_areaArray[i].name;
+		dest.append(option);
+	}
+	for(var i=0;i<dest.children.length;i++) {
+		if(previousValue == dest.children[i].value) {
+			dest.value = previousValue;
+			break;
+		}
 	}
 }
 
@@ -161,6 +316,31 @@ function loadItems() {
 		option.innerText=global_itemArray[i].name;
 		items.append(option);
 	}
+	
+	var items = document.getElementById("item");
+	var previousValue = items.value;
+	items.innerHTML = null;
+	var blankOption = document.createElement("option");
+	blankOption.setAttribute("value",null);
+	items.append(blankOption);
+	var newItemOption = document.createElement("option");
+	newItemOption.setAttribute("value",-1);
+	newItemOption.innerText="new Item";
+	items.append(newItemOption);
+	for (var i=0;i<global_itemArray.length;i++) {
+		var option = document.createElement("option");
+		option.setAttribute("value",i);
+		option.innerText=global_itemArray[i].name;
+		items.append(option);
+	}
+	
+	for(var i=0;i<items.children.length;i++) {
+		if(previousValue == items.children[i].value) {
+			items.value = previousValue;
+			break;
+		}
+	}
+	
 }
 function loadMonsters() {
 	var monsters = document.getElementById("area-monster-select");
@@ -171,6 +351,29 @@ function loadMonsters() {
 		option.innerText=global_monsterArray[i].name;
 		monsters.append(option);
 	}
+	var monsters = document.getElementById("monster");
+	var previousValue = monsters.value;
+	monsters.innerHTML = null;
+	var blankOption = document.createElement("option");
+	blankOption.setAttribute("value",null);
+	monsters.append(blankOption);
+	var newMonsterOption = document.createElement("option");
+	newMonsterOption.setAttribute("value",-1);
+	newMonsterOption.innerText="new Monster";
+	monsters.append(newMonsterOption);
+	for (var i=0;i<global_monsterArray.length;i++) {
+		var option = document.createElement("option");
+		option.setAttribute("value",i);
+		option.innerText=global_monsterArray[i].name;
+		monsters.append(option);
+	}
+	
+	for(var i=0;i<monsters.children.length;i++) {
+		if(previousValue == monsters.children[i].value) {
+			monsters.value = previousValue;
+			break;
+		}
+	}
 }
 
 
@@ -178,20 +381,26 @@ function loadMonsters() {
 function areaPanel() {
 	loadDests();
 	loadItems();
-	loadMonsters();
+	//loadMonsters(document.getElementById("area").value);
+	loadAreaPanel(document.getElementById("area").value);
 	document.getElementById("area-edit").style.display=null;
 	document.getElementById("item-edit").style.display='none';
 	document.getElementById("monster-edit").style.display='none';
 }
 
 function itemPanel() {
+	loadDests();
+	loadItems();
+	loadMonsters();
 	document.getElementById("item-edit").style.display=null;
 	document.getElementById("area-edit").style.display='none';
 	document.getElementById("monster-edit").style.display='none';
 }
 
 function monsterPanel() {
+	loadDests();
 	loadItems();
+	loadMonsters();
 	document.getElementById("monster-edit").style.display=null;
 	document.getElementById("item-edit").style.display='none';
 	document.getElementById("area-edit").style.display='none';

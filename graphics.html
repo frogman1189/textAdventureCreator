@@ -68,7 +68,7 @@ Graphical Display
 </li>
 <hr>
 <li>
-<select id="area" onchange="loadArea(this.value)">
+<select id="area" onchange="loadAreaPanel(this.value)">
 <option  value="null"></option>
 <option value="-1">New Area</option>
 </select>
@@ -76,17 +76,18 @@ Graphical Display
 <hr>
 <li>
 <p class="title">Name:</p>
-<input type="text" class="inline" id="area-name" value=""></input>
+<input type="text" class="inline" id="area-name" onfocusout="saveArea()" value=""></input>
 </li>
 <hr>
 <li>
 <p class="title">Description:</p>
-<textarea class="inline" id="area-description"></textarea>
+<textarea class="inline" id="area-description" onfocusout="saveArea()"></textarea>
 </li>
 <hr>
 <li>
 <p class="title">Destinations:</p>
 <p class="inline" id="area-destinations-text"></p>
+<input id="area-dest-dir">Direction</input>
 <select id="area-dest-select">Area:</select>
 <button onclick="areaAddDest()">Add Destination</button><!-- need to add functions-->
 <button onclick="areaRemoveDest()">Remove Destination</button>
@@ -114,7 +115,7 @@ Graphical Display
 <hr>
 <li>
 <p class="title">Start Area:</p>
-<input type="checkbox" id="area-startArea"></input>
+<input type="checkbox" id="area-startArea" onchange="saveArea()"></input>
 </li>
 <hr>
 <li>
@@ -134,7 +135,7 @@ Graphical Display
 </li>
 <hr>
 <li>
-<select id="item" onchange="loadItem(this.value)">
+<select id="item" onchange="loadItemPanel(this.value)">
 <option  value="null"></option>
 <option value="-1">New Item</option>
 </select>
@@ -142,58 +143,53 @@ Graphical Display
 <hr>
 <li>
 <p class="title">Name:</p>
-<input type="text" class="inline" id="name"  value="Sword"></input>
+<input type="text" class="inline" id="item-name"  onfocusout="saveItem()" value="Sword"></input>
 </li>
 <hr>
 <li>
 <p class="title">moveable:</p>
-<input type="checkbox"></input>
+<input type="checkbox" id="moveable" onchange="saveItem()"></input>
 </li>
 <li>
 <p class="title">pickable:</p>
-<input type="checkbox"></input>
+<input type="checkbox" id="pickable" onchange="saveItem()"></input>
 </li>
 <li>
 <p class="title">edible:</p>
-<input type="checkbox"></input>
+<input type="checkbox" id="edible" onchange="saveItem()"></input>
 </li>
 <li>
 <p class="title">drinkable:</p>
-<input type="checkbox"></input>
+<input type="checkbox" id="drinkable" onchange="saveItem()"></input>
 </li>
 <hr>
 <li>
 <p class="title">Examine:</p>
-<textarea class="inline" id="name" >It's not very remarkable</textarea>
+<textarea class="inline" id="item-examine" onfocusout="saveItem()">It's not very remarkable</textarea>
 </li>
 <li>
 <p class="title">Smell:</p>
-<textarea class="inline" id="name" >You sniff it. It has no smell</textarea>
+<textarea class="inline" id="item-smell" onfocusout="saveItem()">You sniff it. It has no smell</textarea>
 </li>
 <hr>
 <li>
 <p class="title">Listen:</p>
-<textarea class="inline" id="name" >You shake it. It doesn't make any noise.</textarea>
-</li>
-<hr>
-<li>
-<p class="title">Examine:</p>
-<textarea class="inline" id="name" >It's not very remarkable</textarea>
+<textarea class="inline" id="item-listen" onfocusout="saveItem()">You shake it. It doesn't make any noise.</textarea>
 </li>
 <hr>
 <li>
 <p class="title">Move Message:</p>
-<textarea class="inline" id="name" >You moved it. What a mighty feat. *Heavy Sarcasm*</textarea>
+<textarea class="inline" id="item-movemsg" onfocusout="saveItem()">You moved it. What a mighty feat. *Heavy Sarcasm*</textarea>
 </li>
 <hr>
 <li>
 <p class="title">Heal:</p>
-<input type="number" class="inline" id="name" value="20" ></input>
+<input type="number" class="inline" id="item-heal" value="20" onfocusout="saveItem()"></input>
 </li>
 <hr>
 <li>
 <p class="title">Dp:</p>
-<input type="number" class="inline" id="name" value="20" ></input>
+<input type="number" class="inline" id="item-dp" value="20" onfocusout="saveItem()"></input>
 </li>
 <hr>
 <li>
@@ -212,7 +208,7 @@ Graphical Display
 </li>
 <hr>
 <li>
-<select id="monster" onchange="loadMonster(this.value)">
+<select id="monster" onchange="loadMonsterPanel(this.value)">
 <option  value="null"></option>
 <option value="-1">New Area</option>
 </select>
@@ -220,27 +216,27 @@ Graphical Display
 <hr>
 <li>
 <p class="title">NAME</p>
-<input type="text" value="UNTITILED MONSTER"></input>
+<input type="text" id="monster-name" value="UNTITILED MONSTER"></input>
 </li>
 <hr>
 <li>
 <p class="title">EXAMINE</p>
-<textarea>You see a monster</textarea>
+<textarea id="monster-examine">You see a monster</textarea>
 </li>
 <hr>
 <li>
 <p class="title">HP</p>
-<input type="number" value="10"></input>
+<input type="number" id="monster-hp" value="10"></input>
 </li>
 <hr>
 <li>
 <p class="title">DP</p>
-<input type="number" value="10"></input>
+<input type="number" id="monster-dp" value="10"></input>
 </li>
 <hr>
 <li>
 <p class="title">Drop</p>
-<!-- Works better if addItem/removeItem submits rather than reveals form-->
+<p class="inline" id="monster-items-text">NONE</p>
 <select id="monster-item-select">Item:</select>
 <button onclick="monsterAddItem()">Add Item</button><!-- need to add functions-->
 <button onclick="monsterRemoveItem()">Remove Item</button>

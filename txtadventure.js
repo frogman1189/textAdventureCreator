@@ -127,8 +127,8 @@ class Area {
 		this.name = name;
 		this.description = description;
 		this.destinations = {};
-		this.items = {};
-		this.monsters = {};
+		this.items = [];
+		this.monsters = [];
 		this.startArea = startArea;
 		this.currentArea = false; //for loading saves. If this is true in json string then it gets set to current area during loading
 		global_areaArray.push(this);
@@ -212,10 +212,10 @@ class Item {
 				listen = "It makes no noise",
 				examine = "There is nothing special about it", 
 				moveable = false,
-				moveMessage = undefined,
+				moveMessage = "",
 				edible = false,
 				drinkable = false,
-				heal = undefined,
+				heal = 0,
 				pickable = false,
 				dp = 0) {
 		//attributes
