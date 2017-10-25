@@ -1,6 +1,5 @@
 //Text Adventure Base Script
-//add help command
-var loadedFile;
+//note to self - add help command
 var global_currentArea = null;
 var global_startArea = null;
 var global_areaArray = [];
@@ -122,7 +121,7 @@ function advanceTick() {
 //Class Area, used to manage each area in the text adventure
 class Area {
 	// contruct area -- declare all variables
-	constructor(name = "New Area", description = "Blank Area", destinations = {}, items = {}, monsters = {}, startArea = false) {
+	constructor(name = "Untitled Area", description = "Blank Area", destinations = {}, items = {}, monsters = {}, startArea = false) {
 		this.class = "area"; //required for applying class prototype when loading json project files
 		this.name = name;
 		this.description = description;
@@ -194,7 +193,7 @@ class Area {
 
 
 class Monster {
-	constructor(name = "New_Monster", examine="It's unremarkable", hp = 10, dp = 1, sp = 1) {
+	constructor(name = "Untitled Monster", examine="It's unremarkable", hp = 10, dp = 1, sp = 1) {
 		this.class = "monster";
 		this.name = name;
 		this.examine = examine;
@@ -207,7 +206,7 @@ class Monster {
 	}
 }
 class Item {
-	constructor(name = "Unamed_Item",
+	constructor(name = "Untitled Item",
 				smell = "It has no smell",
 				listen = "It makes no noise",
 				examine = "There is nothing special about it", 
@@ -250,8 +249,19 @@ function setInputListener() {
 			
 		} 
 	});
+	pan = document.getElementById("pan");
+	content = document.getElementById("content");
+	
+
+
+	content.addEventListener("mousedown", startDrag);
+	window.addEventListener("resize", resizeCanvas);
+	resizeCanvas();
+	canvas = document.getElementById("canvas");
+	context = canvas.getContext("2d");
 }
 
+function resizeCanvas() {c = document.getElementById("canvas"); c.width = window.innerWidth; c.height= window.innerHeight;}
 // displays text to prompt
 function display(text, title=false) {
 	var history = document.getElementById("history");
