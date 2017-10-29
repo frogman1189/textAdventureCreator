@@ -1,0 +1,29 @@
+{"class":"area","name":"Sea","description":"Wet… very wet","destinations":{"N":1,"E":3,"W":4,"S":2},"items":[{"class":"item","name":"Sword","smell":"Smells like iron","listen":"Shrring!","examine":"It looks really sharp","movable":false,"moveMessage":"You can’t move the sword, only pick it up :(","edible":false,"drinkable":false,"heal":0,"pickable":true,"dp":20,"index":0,"moveable":false}],"monsters":[],"startArea":true,"currentArea":true,"index":0}
+
+{"class":"area","name":"Beach","description":"Sandy… quite sandy","destinations":{"N":2,"E":5,"W":6,"S":0},"items":[{"class":"item","name":"Hamburger","smell":"Smells like diabetes","listen":"Grumble Gurgle","examine":"It looks really tasty","movable":false,"moveMessage":"You can’t move the Hamburger","edible":true,"drinkable":false,"heal":50,"pickable":true,"dp":-10,"index":1,"moveable":false}],"monsters":[{"class":"monster","name":"Slime","examine":"It looks gloopy","hp":"100","dp":"1","sp":1,"drop":[],"index":0}],"startArea":false,"currentArea":false,"index":1}
+
+{"class":"area","name":"Valley","description":"V-shaped... significantly v-shaped","destinations":{"N":0,"E":8,"W":7,"S":1},"items":[{"class":"item","name":"Coke","smell":"Smells like a trip to the dentist","listen":"Bubble, booble","examine":"It looks really bubbly","movable":false,"moveMessage":"Moving the coke seems implausible because I’m fairly sure its deprecated code...","edible":false,"drinkable":true,"heal":-5,"pickable":true,"dp":50,"index":2,"moveable":true}],"monsters":[],"startArea":false,"currentArea":false,"index":2}
+
+{"class":"area","name":"Mountains","description":"Rocky… rather rocky","destinations":{"S":8,"N":5,"E":0,"W":3},"items":[],"monsters":[],"startArea":false,"currentArea":false,"index":3}
+
+{"class":"area","name":"Forest","description":"Prickly… fairly prickly","destinations":{"N":6,"E":0,"S":7},"items":[],"monsters":[{"class":"monster","name":"Ent","examine":"It looks rather leafy","hp":"10","dp":"2","sp":1,"drop":[{"class":"item","name":"Hamburger","smell":"Smells like diabetes","listen":"Grumble Gurgle","examine":"It looks really tasty","movable":false,"moveMessage":"You can’t move the Hamburger","edible":true,"drinkable":false,"heal":50,"pickable":true,"dp":-10,"index":1,"moveable":false}],"index":1}],"startArea":false,"currentArea":false,"index":4}
+
+{"class":"area","name":"Plains","description":"Flat... somewhat flat","destinations":{"S":3,"W":1,"E":0,"N":8},"items":[],"monsters":[{"class":"monster","name":"Golemn","examine":"A rather rocky being","hp":"1000","dp":"1","sp":1,"drop":[],"index":2}],"startArea":false,"currentArea":false,"index":5}
+
+{"class":"area","name":"Desert","description":"Dusty... comparatively dusty","destinations":{"N":8,"E":1,"W":5,"S":4},"items":[],"monsters":[],"startArea":false,"currentArea":false,"index":6}
+
+{"class":"area","name":"Volcano","description":"Hot... adequately hot","destinations":{"N":3,"E":8,"W":2,"S":5},"items":[],"monsters":[],"startArea":false,"currentArea":false,"index":7}
+
+{"class":"area","name":"Glacier","description":"Icy... passably icy","destinations":{"N":4,"E":2,"W":7,"S":6},"items":[],"monsters":[],"startArea":false,"currentArea":false,"index":8}
+
+{"class":"item","name":"Sword","smell":"Smells like iron","listen":"Shrring!","examine":"It looks really sharp","movable":false,"moveMessage":"You can’t move the sword, only pick it up :(","edible":false,"drinkable":false,"heal":0,"pickable":true,"dp":20,"index":0,"moveable":false}
+
+{"class":"item","name":"Hamburger","smell":"Smells like diabetes","listen":"Grumble Gurgle","examine":"It looks really tasty","movable":false,"moveMessage":"You can’t move the Hamburger","edible":true,"drinkable":false,"heal":50,"pickable":true,"dp":-10,"index":1,"moveable":false}
+
+{"class":"item","name":"Coke","smell":"Smells like a trip to the dentist","listen":"Bubble, booble","examine":"It looks really bubbly","movable":false,"moveMessage":"Moving the coke seems implausible because I’m fairly sure its deprecated code...","edible":false,"drinkable":true,"heal":-5,"pickable":true,"dp":50,"index":2,"moveable":true}
+
+{"class":"monster","name":"Slime","examine":"It looks gloopy","hp":"100","dp":"1","sp":1,"drop":[],"index":0}
+
+{"class":"monster","name":"Ent","examine":"It looks rather leafy","hp":"10","dp":"2","sp":1,"drop":[{"class":"item","name":"Hamburger","smell":"Smells like diabetes","listen":"Grumble Gurgle","examine":"It looks really tasty","movable":false,"moveMessage":"You can’t move the Hamburger","edible":true,"drinkable":false,"heal":50,"pickable":true,"dp":-10,"index":1,"moveable":false}],"index":1}
+
+{"class":"monster","name":"Golemn","examine":"A rather rocky being","hp":"1000","dp":"1","sp":1,"drop":[],"index":2}

@@ -1,0 +1,243 @@
+<!-- Graphical Display Experiment -->
+<html>
+<head>
+<!-- style sheet -->
+<link rel="stylesheet" href="graphics.css"></link>
+<!-- title -->
+<title>
+TEXT ADVENTURE CREATOR
+</title>
+<!-- loading the graphical script and underthehood script -->
+<script src="txtadventure.js"></script>
+<script src="graphics.js"></script>
+</head>
+<!-- onload set up event listeners -->
+<body onload="setInputListener()">
+<!-- set up content, holds the pannable area 'pan' which contains the pannable graphical representation of areas -->
+<div class="content" id="content">
+<canvas id="canvas" onload="resizeCanvas" style="position:absolute;left:0;top:0;">
+</canvas>
+<div class="pan" id="pan">
+</div>
+</div>
+<!--<button onclick="zoomIn()" style="position:fixed;right:0;top:0;">+</button> <!-- had zoom in/out bars at one point. They broke. Will be rebuilt in v2 --> <!--
+<button onclick="zoomOut()" style="position:fixed;right:0;top:30;">-</button>-->
+
+<!-- title bar, contains saving and loading buttons-->
+<div class="titlebar">>
+<p style="margin:0 0 0 0;display:inline-block;font-size:12pt;">LOAD PROJECT <img src="assets/add.svg" width="auto" height="auto"></img></p>
+<p style="display:inline-block;margin:0 0 0 0;font-size:12pt;" onclick="saveProject()"> SAVE PROJECT <img src="assets/add.svg" width="auto" height="auto"></img></p>
+<!-- this has to be absolute to overlap with <p> saying load project. doesn't work otherwise -->
+<input type="file" id="srcFile" onchange="loadLocalProjectFile()" style="opacity:0;position:absolute;width:20%;height:inherit;top:0;left:0;"></input>
+</div>
+
+
+<!-- sidebar, contains the different sidebar panels for editing variables -->
+<div class="sidebar">
+<div class="sidebar-add">
+
+<!-- Area-edit Panel -->
+<!-- basically has different input areas/textareas which execute saving functions on change-->
+<div id="area-edit" style="">
+<ul>
+<li>
+<p class="title" style="text-align:center">AREA</p>
+</li>
+<hr>
+<li>
+<select id="area" onchange="loadAreaPanel(this.value)">
+<option  value="null"></option>
+<option value="-1">New Area</option>
+</select>
+</li>
+<hr>
+<li>
+<p class="title">Name:</p>
+<input type="text" class="inline" id="area-name" onfocusout="saveArea()" value=""></input>
+</li>
+<hr>
+<li>
+<p class="title">Description:</p>
+<textarea class="inline" id="area-description" onfocusout="saveArea()"></textarea>
+</li>
+<hr>
+<li>
+<p class="title">Destinations:</p>
+<p class="inline" id="area-destinations-text"></p>
+<input id="area-dest-dir">Direction</input>
+<select id="area-dest-select">Area:</select>
+<button onclick="areaAddDest()">Add Destination</button><!-- destinations require special code beyond general saving thus the addArea stuff, likewise for items and monsters -->
+<button onclick="areaRemoveDest()">Remove Destination</button>
+</li>
+<hr>
+<li>
+<p class="title">Items:</p>
+<p class="inline" id="area-items-text">NONE</p>
+<select id="area-item-select">Item:</select>
+<button onclick="areaAddItem()">Add Item</button>
+<button onclick="areaRemoveItem()">Remove Item</button>
+</li>
+<hr>
+<li>
+<p class="title">Monsters:</p>
+<p class="inline" id="area-monsters-text">NONE</p>
+<select id="area-monster-select">Monster:</select>
+<button onclick="areaAddMonster()">Add Monster</button>
+<button onclick="areaRemoveMonster()">Remove Monster</button>
+</li>
+<hr>
+<li>
+<p class="title">Start Area:</p>
+<input type="checkbox" id="area-startArea" onchange="saveArea()"></input>
+</li>
+<hr>
+</ul>
+</div>
+<!-- Area-edit Panel end -->
+
+
+
+<!-- Item-edit Panel -->
+<!-- basically the same as area, but actually simpler-->
+<div id="item-edit" style="display:none;">
+<ul>
+<li>
+<p class="title">ITEM</p>
+</li>
+<hr>
+<li>
+<select id="item" onchange="loadItemPanel(this.value)">
+<option  value="null"></option>
+<option value="-1">Add Item</option>
+</select>
+</li>
+<hr>
+<li>
+<p class="title">Name:</p>
+<input type="text" class="inline" id="item-name"  onfocusout="saveItem()" value=""></input>
+</li>
+<hr>
+<li>
+<p class="title">moveable:</p>
+<input type="checkbox" id="moveable" onchange="saveItem()"></input>
+</li>
+<li>
+<p class="title">pickable:</p>
+<input type="checkbox" id="pickable" onchange="saveItem()"></input>
+</li>
+<li>
+<p class="title">edible:</p>
+<input type="checkbox" id="edible" onchange="saveItem()"></input>
+</li>
+<li>
+<p class="title">drinkable:</p>
+<input type="checkbox" id="drinkable" onchange="saveItem()"></input>
+</li>
+<hr>
+<li>
+<p class="title">Examine:</p>
+<textarea class="inline" id="item-examine" onfocusout="saveItem()"></textarea>
+</li>
+<li>
+<p class="title">Smell:</p>
+<textarea class="inline" id="item-smell" onfocusout="saveItem()"></textarea>
+</li>
+<hr>
+<li>
+<p class="title">Listen:</p>
+<textarea class="inline" id="item-listen" onfocusout="saveItem()"></textarea>
+</li>
+<hr>
+<li>
+<p class="title">Move Message:</p>
+<textarea class="inline" id="item-movemsg" onfocusout="saveItem()"></textarea>
+</li>
+<hr>
+<li>
+<p class="title">Heal:</p>
+<input type="number" class="inline" id="item-heal" value="20" onfocusout="saveItem()"></input>
+</li>
+<hr>
+<li>
+<p class="title">Dp:</p>
+<input type="number" class="inline" id="item-dp" value="20" onfocusout="saveItem()"></input>
+</li>
+<hr>
+</ul>
+</div>
+
+
+
+<!-- Monster Edit Panel -->
+<!-- like area panel but only has items (drop) with the extra complexity, rather than dest and items-->
+<div id="monster-edit" style="display:none;">
+<ul>
+<li>
+<p class="title">MONSTER</p>
+</li>
+<hr>
+<li>
+<select id="monster" onchange="loadMonsterPanel(this.value)">
+<option  value="null"></option>
+<option value="-1">New Area</option>
+</select>
+</li>
+<hr>
+<li>
+<p class="title">NAME</p>
+<input type="text" id="monster-name" onfocusout="saveMonster()" value="UNTITILED MONSTER"></input>
+</li>
+<hr>
+<li>
+<p class="title">EXAMINE</p>
+<textarea id="monster-examine" onfocusout="saveMonster()">You see a monster</textarea>
+</li>
+<hr>
+<li>
+<p class="title">HP</p>
+<input type="number" id="monster-hp" onfocusout="saveMonster()" value="10"></input>
+</li>
+<hr>
+<li>
+<p class="title">DP</p>
+<input type="number" id="monster-dp" onfocusout="saveMonster()" value="10"></input>
+</li>
+<hr>
+<li>
+<p class="title">Drop</p>
+<p class="inline" id="monster-items-text">NONE</p>
+<select id="monster-item-select">Item:</select>
+<button onclick="monsterAddItem()">Add Item</button><!-- need to add functions-->
+<button onclick="monsterRemoveItem()">Remove Item</button>
+</li>
+<hr>
+</ul>
+</div>
+
+<!-- div that contains buttons that change panels. Basic ascii representation of each thing. -->
+<div style="left:20%;top:5%;position:fixed">
+<ul>
+<li>
+<button onclick="areaPanel()">|"|</button>
+</li>
+<li>
+<button onclick="itemPanel()">+=></button>
+</li>
+<li>
+<button onclick="monsterPanel()">O_o</button>
+</li>
+</div>
+</div>
+</div>
+
+<!-- console area -->
+<div id="console" class="console">
+<div id="console-bar" class="window-bar">
+<button onclick="resizeConsole()" style="height:80%;padding:0 0 0 0;margin: 0 0 0 0;background:none;border:none;">_□</button>
+<button onclick="start()" style="height:80%;padding:0 0 0 0;margin: 0 0 0 0;background:none;border:none;">Start Game</button>
+</div>
+<div id="history">			
+</div>
+<textarea class="consoleInput" id="input" type="text">></textarea>
+</div>
+</body>

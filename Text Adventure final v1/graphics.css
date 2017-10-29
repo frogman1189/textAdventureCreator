@@ -1,0 +1,230 @@
+
+body {
+	padding:0 0 0 0;
+	margin: 0 0 0 0;
+}
+p {
+	display:block;
+	word-wrap:break-word;
+	font-family:"Lucida Console", Monospace;
+	font-size:8pt;
+}
+img {
+	vertical-align:center;
+}
+ul {
+	margin:0 0 0 0;
+	padding:0 0 0 0;
+}
+li {
+	margin:10 0 10 0;
+	list-style-type:none;
+}
+button {
+	margin: 5 0 5 0;
+}
+input {
+	/*background: rgba(255, 255, 255, 0);*/
+	/*border:none;*/
+}
+.titlebar{
+	position:fixed;
+	top:0;
+	left:0;
+	margin: 0 0 0 0;
+	padding:0 0 0 0;
+	width:100%;
+	height:5%;
+	background:#101010;
+	background: -webkit-linear-gradient(top, #303030 0%, #000000 80%); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(top, #303030 0%, #000000 80%); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(top, #303030 0%, #000000 80%); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom, #303030 0%, #000000 80%); /* Standard syntax */
+	
+}
+.titlebar img {
+	height:80%;
+}
+.titlebar p{
+	/*margin:0 0 0 1vw;*/
+	font-size:90%;
+	/*font-weight:900;*/
+	/*text-align:center;*/
+	color:#a0a0a0;
+}
+.content {
+	left:20%;
+	resize:both;
+	position:fixed;
+	width:80%;
+	height:100%;
+	overflow:hidden;
+}
+.pan {
+	/*border:solid;*/
+	position:absolute;
+	resize:both;
+	width:100%;
+	height:100%;
+}
+.area {
+	position:absolute;
+	background-color:silver;
+}
+.sidebar {
+	/*border:solid;
+	border-width:1pt;*/
+	left:0;
+	top:5%;
+	bottom:0;
+	position:fixed;
+	overflow-y:scroll;
+    overflow-x:hidden;
+	width:20%;
+	min-width:195.350px;
+	/*height:100%;*/
+	/*display:inline-block;*/
+	padding:0 0 0 0;
+	margin:0 0 0 0;
+	
+	background: #0d1926; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(top, #ffffff 0%, #bababa 80%); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(top, #ffffff 0%, #bababa 80%); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(top, #ffffff 0%, #bababa 80%); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom, #ffffff 0%, #bababa 80%); /* Standard syntax */
+	
+	font-size:100%;
+	vertical-align:middle;
+}
+/*.sidebar-add {
+	
+	margin: 5 10 5 10;
+	padding:0 0 0 0;
+	display:inline-block;
+	height:8%;
+	width:85%;
+	list-style-type:none;
+	white-space:nowrap;
+	border:none;
+	border-width:1pt;
+	border-radius:1vw;
+	
+	background: #c0c0c0; /* For browsers that do not support gradients */
+    /*background: -webkit-radial-gradient(#eeeeee 0%, #bababa 100%); /* For Safari 5.1 to 6.0 */
+    /*background: -o-radial-gradient(#eeeeee 0%, #bababa 100%); /* For Opera 11.1 to 12.0 */
+    /*background: -moz-radial-gradient(#eeeeee 0%, #bababa 100%); /* For Firefox 3.6 to 15 */
+    /*background: radial-gradient(#eeeeee 0%, #bababa 100%); /* Standard syntax */
+/*}
+.sidebar-add p {
+	width:90%;
+	margin:0.5vw 0.5vw 0.5vw 0.5vw;
+	font-size:1.5vw;
+	font-weight:600;
+	color:#323232;
+	display:inline-block;
+	vertical-align:middle;
+}
+.sidebar img {
+	height:3vw;
+	width:auto;
+	display:inline-block;
+	vertical-align:middle;
+	float:right;
+}*/
+.helper {
+	display:inline-block;
+	height:100%;
+	vertical-align:middle;
+}
+.sidebar-add {
+	padding:5 5 5 5;
+	margin:0 0 0 0;
+	overflow:hidden;
+	position:absolute;
+	display:relative;
+	border-color:#606060;
+	min-height:5pt;
+	min-width:5pt;
+	/*background: #0d1926; /* For browsers that do not support gradients */
+    /*background: -webkit-linear-gradient(top, #ffffff 0%, #bababa 80%); /* For Safari 5.1 to 6.0 */
+    /*background: -o-linear-gradient(top, #ffffff 0%, #bababa 80%); /* For Opera 11.1 to 12.0 */
+    /*background: -moz-linear-gradient(top, #ffffff 0%, #bababa 80%); /* For Firefox 3.6 to 15 */
+    /*background: linear-gradient(to bottom, #ffffff 0%, #bababa 80%); /* Standard syntax */
+}
+.sidebar-add textarea {
+	width:100%;
+	min-height:50px;
+	font-family:"Lucida Console", Monospace;
+	font-size:8pt;
+	border:none;
+	resize:vertical;
+	overflow-y:scroll;
+}
+.sidebar-add p {
+	font-size:8pt;
+	font-family:"Lucida Console", monospace;
+	margin:0 0 0 0;
+	display:inline-block;
+}
+.sidebar .title {
+	font-size:12pt;
+}
+
+/* Console Style */
+.console {
+	display:inline-block;
+	resize:vertical;
+	position:fixed;
+	left:20%;
+	bottom:0;
+	background-color:#0d1926;
+	color:#d9e6f2;
+	font-family:Monospace;
+	font-size:5pt;
+	border:none;
+	height:30pt;
+	width:80%;
+	min-height:50pt;
+	overflow-y:auto;
+	word-wrap: break-word;
+	padding-left:0;
+	margin-left: 0;
+
+}
+.window-bar {
+	width:100%;
+	border-style:solid;
+	border-width:1pt;
+	border-color:#202020;
+	height:15pt;
+	background-color:#aaaaaa;
+}
+.history {
+	margin:0pt 0pt 0pt 0pt;
+	padding:0pt 0pt 0pt 0pt;
+	width:100%;
+	overflow-y:auto;
+	overflow-x:hidden;
+	font-weight:300;
+}
+#title {
+	font-weight:900;
+	padding: 15pt 0pt 10pt 0pt;
+}
+.consoleInput {
+	display:inline-block;
+	background-color:#0d1926;
+	color:#d9e6f2;
+	font-family:Monospace;
+	font-size:8pt;
+	
+	width:100%;
+	margin: 0pt 0pt 0pt 0pt;
+	padding:0pt 0pt 0pt 0pt;
+	border:none;
+	resize:none;
+
+}
+.consoleInput:focus {
+	outline:none; /*remove outline from input box when in focus*/
+}
